@@ -1,18 +1,20 @@
-﻿namespace SunNext.Web
+using System;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SunNext.Data;
+
+namespace SunNext.Web
 {
     using System.Reflection;
-
     using SunNext.Data;
     using SunNext.Data.Common;
     using SunNext.Data.Common.Repositories;
     using SunNext.Data.Models;
     using SunNext.Data.Repositories;
     using SunNext.Data.Seeding;
-    using SunNext.Services.Data;
     using SunNext.Services.Mapping;
     using SunNext.Services.Messaging;
     using SunNext.Web.ViewModels;
-
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -26,6 +28,8 @@
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            
+            // Remove the duplicate DbContext and Identity registration from here
             ConfigureServices(builder.Services, builder.Configuration);
             var app = builder.Build();
             Configure(app);
@@ -34,11 +38,14 @@
 
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+            // Single DbContext registration with proper connection string
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+            // Single Identity registration with roles
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<CookiePolicyOptions>(
                 options =>
@@ -52,6 +59,7 @@
                 {
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 }).AddRazorRuntimeCompilation();
+            
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -64,7 +72,6 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
         }
 
         private static void Configure(WebApplication app)
