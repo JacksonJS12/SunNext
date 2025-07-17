@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Solar Assets";
+}
+
+<h2 class="mb-4">My Solar Assets</h2>
+
+<form method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="searchTerm" class="form-control" placeholder="Search by name or location..." />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-light">
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Capacity (kW)</th>
+        <th>Location</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Placeholder rows -->
+    <tr>
+        <td>Sample Asset</td>
+        <td>Solar Panel</td>
+        <td>50</td>
+        <td>Sofia</td>
+        <td>
+            <a href="#" class="btn btn-sm btn-info">Details</a>
+            <a href="#" class="btn btn-sm btn-warning">Edit</a>
+            <a href="#" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>

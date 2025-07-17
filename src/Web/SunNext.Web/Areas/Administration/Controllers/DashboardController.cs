@@ -16,5 +16,13 @@
             var viewModel = new IndexViewModel {};
             return this.View(viewModel);
         }
+        public IActionResult Overview()
+        {
+            return View();
+        }
+        public IActionResult Users()
+        {
+            return View();
+        }
     }
 }

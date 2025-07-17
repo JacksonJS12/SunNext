@@ -49,5 +49,9 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Settings\Index.cshtml" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Error\" />
+  </ItemGroup>
 </Project>
 

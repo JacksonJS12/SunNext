@@ -1,0 +1,70 @@
+@{
+    ViewData["Title"] = "Asset Details";
+}
+
+<h2 class="mb-4">Solar Asset Details</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Sample Asset</h5>
+        <p class="card-text"><strong>Type:</strong> Solar Panel</p>
+        <p class="card-text"><strong>Capacity:</strong> 50 kW</p>
+        <p class="card-text"><strong>Location:</strong> Plovdiv, Bulgaria</p>
+        <p class="card-text"><strong>Owner:</strong> Ivan Petrov</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h4>Map Location</h4>
+        <div id="map" style="height: 300px;" class="rounded shadow-sm"></div>
+    </div>
+    <div class="col-md-6">
+        <h4>Battery Status</h4>
+        <div class="card">
+            <div class="card-body">
+                <p><strong>State of Charge:</strong> 82%</p>
+                <p><strong>Health:</strong> Good</p>
+                <p><strong>Cycle Count:</strong> 132</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4>Recent Energy Readings</h4>
+<canvas id="energyChart" height="100"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <script>
+        // Replace these with real coordinates from the model in production
+        const latitude = 42.1354;
+        const longitude = 24.7453;
+
+        const map = L.map('map').setView([latitude, longitude], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        L.marker([latitude, longitude]).addTo(map)
+            .bindPopup('Solar Asset Location')
+            .openPopup();
+
+        const ctx = document.getElementById('energyChart');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['08:00', '09:00', '10:00', '11:00'],
+                datasets: [{
+                    label: 'kWh',
+                    data: [5, 15, 22, 30],
+                    borderWidth: 2
+                }]
+            }
+        });
+    </script>
+}

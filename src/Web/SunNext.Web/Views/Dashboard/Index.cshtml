@@ -1,0 +1,118 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2 class="mb-4">Monitoring Dashboard</h2>
+
+<!-- KPIs -->
+<div class="row text-center mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">
+                    Total Energy (Today)
+                    <i class="bi bi-question-circle-fill text-muted" style="cursor: help;"
+                       data-bs-toggle="tooltip"
+                       title="Total energy generated today by all your solar systems. Measured in kilowatt-hours (kWh)."></i>
+                </h6>
+                <h3 class="text-success">123.4 kWh</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">
+                    Avg Battery SOC
+                    <i class="bi bi-question-circle-fill text-muted" style="cursor: help;"
+                       data-bs-toggle="tooltip"
+                       title="SOC = State of Charge. This shows the average charge level of all your batteries. 100% = fully charged."></i>
+                </h6>
+                <h3 class="text-primary">78%</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">
+                    Active Systems
+                    <i class="bi bi-question-circle-fill text-muted" style="cursor: help;"
+                       data-bs-toggle="tooltip"
+                       title="Number of solar systems currently online and sending data, out of the total you own."></i>
+                </h6>
+                <h3 class="text-info">4 / 4</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Energy Generated (Last 7 Days)
+                    <i class="bi bi-question-circle-fill text-muted" style="cursor: help;"
+                       data-bs-toggle="tooltip"
+                       title="Daily solar energy production over the past week, in kilowatt-hours (kWh). Helps spot patterns or drops."></i>
+                </h5>
+                <canvas id="energyChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Battery SOC Trend
+                    <i class="bi bi-question-circle-fill text-muted" style="cursor: help;"
+                       data-bs-toggle="tooltip"
+                       title="How your battery charge levels changed throughout the day. Useful to monitor charging/discharging activity."></i>
+                </h5>
+                <canvas id="batteryChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const energyCtx = document.getElementById('energyChart');
+        new Chart(energyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'kWh',
+                    data: [22, 19, 23, 25, 28, 31, 27],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                }]
+            }
+        });
+
+        const batteryCtx = document.getElementById('batteryChart');
+        new Chart(batteryCtx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '06:00', '12:00', '18:00', '00:00'],
+                datasets: [{
+                    label: 'SOC (%)',
+                    data: [60, 75, 85, 70, 65],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: true
+                }]
+            }
+        });
+
+        // Enable Bootstrap tooltips
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+            new bootstrap.Tooltip(el);
+        });
+    </script>
+}

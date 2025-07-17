@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Create New Asset";
+}
+
+<h2 class="mb-4">Create New Asset</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Type</label>
+        <select class="form-select">
+            <option>-- Select Type --</option>
+            <option>Solar Panel</option>
+            <option>Inverter</option>
+            <option>Battery</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Capacity (kW)</label>
+        <input class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Location</label>
+        <input class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="#" class="btn btn-secondary">Cancel</a>
+</form>
