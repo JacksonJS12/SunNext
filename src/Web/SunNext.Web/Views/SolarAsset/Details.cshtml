@@ -2,37 +2,58 @@
     ViewData["Title"] = "Asset Details";
 }
 
-<h2 class="mb-4">Solar Asset Details</h2>
+<div class="container py-5">
+    <div class="glass-card mb-5 mx-auto" style="max-width: 800px;">
+        <h2 class="text-center glow-text mb-4">☀️ Solar Asset Details</h2>
 
-<div class="card mb-4">
-    <div class="card-body">
-        <h5 class="card-title">Sample Asset</h5>
-        <p class="card-text"><strong>Type:</strong> Solar Panel</p>
-        <p class="card-text"><strong>Capacity:</strong> 50 kW</p>
-        <p class="card-text"><strong>Location:</strong> Plovdiv, Bulgaria</p>
-        <p class="card-text"><strong>Owner:</strong> Ivan Petrov</p>
-    </div>
-</div>
+        <!-- Basic Info -->
+        <div class="mb-4">
+            <h4 class="text-info mb-3">📄 General Info</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-transparent text-light border-0">
+                    <strong>Name:</strong> Sample Asset
+                </li>
+                <li class="list-group-item bg-transparent text-light border-0">
+                    <strong>Type:</strong> Solar Panel
+                </li>
+                <li class="list-group-item bg-transparent text-light border-0">
+                    <strong>Capacity:</strong> 50 kW
+                </li>
+                <li class="list-group-item bg-transparent text-light border-0">
+                    <strong>Location:</strong> Plovdiv, Bulgaria
+                </li>
+                <li class="list-group-item bg-transparent text-light border-0">
+                    <strong>Owner:</strong> Ivan Petrov
+                </li>
+            </ul>
+        </div>
 
-<div class="row mb-4">
-    <div class="col-md-6">
-        <h4>Map Location</h4>
-        <div id="map" style="height: 300px;" class="rounded shadow-sm"></div>
-    </div>
-    <div class="col-md-6">
-        <h4>Battery Status</h4>
-        <div class="card">
-            <div class="card-body">
-                <p><strong>State of Charge:</strong> 82%</p>
-                <p><strong>Health:</strong> Good</p>
-                <p><strong>Cycle Count:</strong> 132</p>
+        <!-- Two Column Section -->
+        <div class="row mb-5">
+            <!-- Map -->
+            <div class="col-md-6 mb-4">
+                <h5 class="text-info mb-2">📍 Map Location</h5>
+                <div id="map" class="rounded shadow" style="height: 300px;"></div>
             </div>
+
+            <!-- Battery Status -->
+            <div class="col-md-6 mb-4">
+                <h5 class="text-info mb-2">🔋 Battery Status</h5>
+                <div class="glass-card p-3">
+                    <p><strong>State of Charge:</strong> 82%</p>
+                    <p><strong>Health:</strong> Good</p>
+                    <p><strong>Cycle Count:</strong> 132</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Energy Chart -->
+        <div>
+            <h5 class="text-info mb-3">📊 Recent Energy Readings</h5>
+            <canvas id="energyChart" height="120"></canvas>
         </div>
     </div>
 </div>
-
-<h4>Recent Energy Readings</h4>
-<canvas id="energyChart" height="100"></canvas>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -40,30 +61,40 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <script>
-        // Replace these with real coordinates from the model in production
+        // Map coordinates
         const latitude = 42.1354;
         const longitude = 24.7453;
 
         const map = L.map('map').setView([latitude, longitude], 13);
-
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
+        L.marker([latitude, longitude]).addTo(map).bindPopup('Solar Asset Location').openPopup();
 
-        L.marker([latitude, longitude]).addTo(map)
-            .bindPopup('Solar Asset Location')
-            .openPopup();
-
-        const ctx = document.getElementById('energyChart');
-        new Chart(ctx, {
+        // Chart.js setup
+        new Chart(document.getElementById('energyChart'), {
             type: 'line',
             data: {
                 labels: ['08:00', '09:00', '10:00', '11:00'],
                 datasets: [{
-                    label: 'kWh',
+                    label: 'Energy (kWh)',
                     data: [5, 15, 22, 30],
-                    borderWidth: 2
+                    borderWidth: 2,
+                    borderColor: 'rgba(0, 188, 255, 1)',
+                    backgroundColor: 'rgba(0, 188, 255, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 5
                 }]
+            },
+            options: {
+                scales: {
+                    x: { ticks: { color: "#ccc" } },
+                    y: { ticks: { color: "#ccc" } }
+                },
+                plugins: {
+                    legend: { labels: { color: "#ccc" } }
+                }
             }
         });
     </script>

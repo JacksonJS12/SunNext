@@ -4,7 +4,7 @@ namespace SunNext.Web.Controllers;
 
 public class SolarAssetController : Controller
 {
-    public IActionResult Index()
+    public IActionResult All()
     {
         return View();
     }

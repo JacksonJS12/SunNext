@@ -1,0 +1,71 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SunNext.Common
+<nav class="navbar navbar-expand-lg navbar-dark glass-card rounded-4 shadow-sm px-3 py-2 sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand glow-text fw-semibold text-white" asp-controller="Home" asp-action="Index">
+            ☀️ @GlobalConstants.SystemName
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
+                aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- Home -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="homeDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-house-door me-1"></i> Home
+                    </a>
+                    <ul class="dropdown-menu bg-dark border-0 mt-1">
+                        <li><a class="dropdown-item text-white" asp-controller="Home" asp-action="Index">🏠 Landing Page</a></li>
+                        <li><a class="dropdown-item text-white" asp-controller="Home" asp-action="About">ℹ️ About</a></li>
+                        <li><a class="dropdown-item text-white" asp-controller="Home" asp-action="Contact">📬 Contact</a></li>
+                        <li><a class="dropdown-item text-white" asp-controller="Home" asp-action="Privacy">🔒 Privacy Policy</a></li>
+                    </ul>
+                </li>
+
+                <!-- Assets -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="assetsDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-hdd-stack me-1"></i> Assets
+                    </a>
+                    <ul class="dropdown-menu bg-dark border-0 mt-1">
+                        <li><a class="dropdown-item text-white" asp-controller="SolarAsset" asp-action="All">🌆 My Assets</a></li>
+                        <li><a class="dropdown-item text-white" asp-controller="SolarAsset" asp-action="Create">➕ Add Asset</a></li>
+                    </ul>
+                </li>
+
+                <!-- Monitoring -->
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-controller="Dashboard" asp-action="Index">
+                        <i class="bi bi-activity me-1"></i> Monitoring
+                    </a>
+                </li>
+
+                <!-- Trading -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="tradeDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-graph-up-arrow me-1"></i> Trading
+                    </a>
+                    <ul class="dropdown-menu bg-dark border-0 mt-1">
+                        <li><a class="dropdown-item text-white" asp-controller="Trade" asp-action="Index">📈 Recommendations</a></li>
+                        <li><a class="dropdown-item text-white" asp-controller="Trade" asp-action="Targets">🎯 Target Settings</a></li>
+                    </ul>
+                </li>
+
+                <!-- Profile -->
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-controller="Account" asp-action="Profile">
+                        <i class="bi bi-person-circle me-1"></i> My Profile
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Auth (Login/Logout) -->
+            <ul class="navbar-nav ms-auto">
+                <partial name="_LoginPartial" />
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,84 @@
+    @{
+        ViewData["Title"] = "Solar Assets";
+    }
+
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-white">☀️ Solar Assets Overview</h2>
+            <p class="text-muted">Track and manage your smart solar systems across all locations</p>
+        </div>
+
+        <form method="get" class="mb-4">
+            <div class="input-group shadow-sm rounded-pill overflow-hidden">
+                <input type="text" name="searchTerm" class="form-control border-0 px-4 py-2" placeholder="Search by name or location..." />
+                <button type="submit" class="btn search-btn px-4">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+
+        <div class="glass-container">
+            <div class="table-responsive">
+                <table class="table align-middle dark-table mb-0">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                                <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Label of the asset."></i>
+                            </th>
+                            <th class="d-none d-sm-table-cell">
+                                Type
+                                <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Solar Panel, Inverter, etc."></i>
+                            </th>
+                            <th>
+                                Capacity
+                                <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Output in kW."></i>
+                            </th>
+                            <th class="d-none d-md-table-cell">
+                                Location
+                                <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" title="Install location."></i>
+                            </th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="custom-hover">
+                            <td>Rooftop Alpha</td>
+                            <td class="d-none d-sm-table-cell">Solar Panel</td>
+                            <td>5.5 kW</td>
+                            <td class="d-none d-md-table-cell">Sofia</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2 flex-wrap">
+                                    <a href="#" class="btn glow-btn btn-details">Details</a>
+                                    <a href="#" class="btn glow-btn btn-edit">Edit</a>
+                                    <a href="#" class="btn glow-btn btn-delete">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="custom-hover">
+                            <td>Battery Unit B</td>
+                            <td class="d-none d-sm-table-cell">Battery</td>
+                            <td>7.2 kW</td>
+                            <td class="d-none d-md-table-cell">Burgas</td>
+                            <td class="text-end">
+                                <div class="d-flex justify-content-end gap-2 flex-wrap">
+                                    <a href="#" class="btn glow-btn btn-details">Details</a>
+                                    <a href="#" class="btn glow-btn btn-edit">Edit</a>
+                                    <a href="#" class="btn glow-btn btn-delete">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+                tooltips.forEach(el => new bootstrap.Tooltip(el));
+            });
+        </script>
+    }

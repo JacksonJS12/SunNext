@@ -2,79 +2,69 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<h2 class="mb-4">Monitoring Dashboard</h2>
+<div class="container-fluid py-5">
+    <div class="text-center mb-5">
+        <h2 class="glow-text">📊 Monitoring Dashboard</h2>
+        <p class="text-muted">Track performance, storage, and system uptime</p>
+    </div>
 
-<!-- KPIs -->
-<div class="row text-center mb-4">
-    <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6 class="text-muted">
+    <!-- KPIs -->
+    <div class="row text-center mb-4 g-4">
+        <div class="col-md-4">
+            <div class="glass-card kpi-card">
+                <h6 class="card-subtitle text-muted">
                     Total Energy (Today)
-                    <i class="bi bi-question-circle-fill text-muted" style="cursor: help;"
-                       data-bs-toggle="tooltip"
+                    <i class="bi bi-info-circle-fill text-muted ms-1" data-bs-toggle="tooltip"
                        title="Total energy generated today by all your solar systems. Measured in kilowatt-hours (kWh)."></i>
                 </h6>
-                <h3 class="text-success">123.4 kWh</h3>
+                <h3 class="glow-text mt-2">123.4 kWh</h3>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6 class="text-muted">
+        <div class="col-md-4">
+            <div class="glass-card kpi-card">
+                <h6 class="card-subtitle text-muted">
                     Avg Battery SOC
-                    <i class="bi bi-question-circle-fill text-muted" style="cursor: help;"
-                       data-bs-toggle="tooltip"
+                    <i class="bi bi-info-circle-fill text-muted ms-1" data-bs-toggle="tooltip"
                        title="SOC = State of Charge. This shows the average charge level of all your batteries. 100% = fully charged."></i>
                 </h6>
-                <h3 class="text-primary">78%</h3>
+                <h3 class="glow-text mt-2">78%</h3>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6 class="text-muted">
+        <div class="col-md-4">
+            <div class="glass-card kpi-card">
+                <h6 class="card-subtitle text-muted">
                     Active Systems
-                    <i class="bi bi-question-circle-fill text-muted" style="cursor: help;"
-                       data-bs-toggle="tooltip"
+                    <i class="bi bi-info-circle-fill text-muted ms-1" data-bs-toggle="tooltip"
                        title="Number of solar systems currently online and sending data, out of the total you own."></i>
                 </h6>
-                <h3 class="text-info">4 / 4</h3>
+                <h3 class="glow-text mt-2">4 / 4</h3>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Charts -->
-<div class="row">
-    <div class="col-md-6 mb-4">
-        <div class="card h-100">
-            <div class="card-body">
-                <h5 class="card-title">
+    <!-- Charts -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="glass-card h-100">
+                <h5 class="card-title text-info">
                     Energy Generated (Last 7 Days)
-                    <i class="bi bi-question-circle-fill text-muted" style="cursor: help;"
-                       data-bs-toggle="tooltip"
+                    <i class="bi bi-info-circle-fill text-muted ms-1" data-bs-toggle="tooltip"
                        title="Daily solar energy production over the past week, in kilowatt-hours (kWh). Helps spot patterns or drops."></i>
                 </h5>
-                <canvas id="energyChart" height="200"></canvas>
+                <canvas id="energyChart" height="200" class="mt-3"></canvas>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-6 mb-4">
-        <div class="card h-100">
-            <div class="card-body">
-                <h5 class="card-title">
+        <div class="col-md-6">
+            <div class="glass-card h-100">
+                <h5 class="card-title text-info">
                     Battery SOC Trend
-                    <i class="bi bi-question-circle-fill text-muted" style="cursor: help;"
-                       data-bs-toggle="tooltip"
+                    <i class="bi bi-info-circle-fill text-muted ms-1" data-bs-toggle="tooltip"
                        title="How your battery charge levels changed throughout the day. Useful to monitor charging/discharging activity."></i>
                 </h5>
-                <canvas id="batteryChart" height="200"></canvas>
+                <canvas id="batteryChart" height="200" class="mt-3"></canvas>
             </div>
         </div>
     </div>
@@ -93,6 +83,15 @@
                     data: [22, 19, 23, 25, 28, 31, 27],
                     backgroundColor: 'rgba(54, 162, 235, 0.6)'
                 }]
+            },
+            options: {
+                plugins: {
+                    legend: { labels: { color: '#ccc' } }
+                },
+                scales: {
+                    x: { ticks: { color: '#aaa' }, grid: { color: '#333' } },
+                    y: { ticks: { color: '#aaa' }, grid: { color: '#333' } }
+                }
             }
         });
 
@@ -104,13 +103,23 @@
                 datasets: [{
                     label: 'SOC (%)',
                     data: [60, 75, 85, 70, 65],
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    fill: true
+                    borderColor: 'rgba(0, 255, 200, 1)',
+                    backgroundColor: 'rgba(0, 255, 200, 0.1)',
+                    fill: true,
+                    tension: 0.4
                 }]
+            },
+            options: {
+                plugins: {
+                    legend: { labels: { color: '#ccc' } }
+                },
+                scales: {
+                    x: { ticks: { color: '#aaa' }, grid: { color: '#333' } },
+                    y: { ticks: { color: '#aaa' }, grid: { color: '#333' } }
+                }
             }
         });
 
-        // Enable Bootstrap tooltips
         document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
             new bootstrap.Tooltip(el);
         });
