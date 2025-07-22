@@ -25,7 +25,9 @@ namespace SunNext.Data.Seeding
                 {
                     UserName = adminEmail,
                     Email = adminEmail,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    FirstName = "Admin",
+                    LastName = "Admin",
                 };
 
                 var result = await userManager.CreateAsync(adminUser, adminPassword);

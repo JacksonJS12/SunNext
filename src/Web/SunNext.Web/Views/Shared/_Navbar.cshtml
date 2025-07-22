@@ -12,7 +12,6 @@
 
         <div class="collapse navbar-collapse" id="navbarMain">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <!-- Home -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" href="#" id="homeDropdown" role="button" data-bs-toggle="dropdown">
                         <i class="bi bi-house-door me-1"></i> Home
@@ -25,7 +24,6 @@
                     </ul>
                 </li>
 
-                <!-- Assets -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" href="#" id="assetsDropdown" role="button" data-bs-toggle="dropdown">
                         <i class="bi bi-hdd-stack me-1"></i> Assets
@@ -36,33 +34,30 @@
                     </ul>
                 </li>
 
-                <!-- Monitoring -->
                 <li class="nav-item">
-                    <a class="nav-link text-white" asp-controller="Dashboard" asp-action="Index">
+                    <a class="nav-link text-white" asp-controller="Monitoring" asp-action="Index">
                         <i class="bi bi-activity me-1"></i> Monitoring
                     </a>
                 </li>
 
-                <!-- Trading -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" href="#" id="tradeDropdown" role="button" data-bs-toggle="dropdown">
                         <i class="bi bi-graph-up-arrow me-1"></i> Trading
                     </a>
                     <ul class="dropdown-menu bg-dark border-0 mt-1">
                         <li><a class="dropdown-item text-white" asp-controller="Trade" asp-action="Index">📈 Recommendations</a></li>
-                        <li><a class="dropdown-item text-white" asp-controller="Trade" asp-action="Targets">🎯 Target Settings</a></li>
+                        <li><a class="dropdown-item text-white" asp-controller="Trade" asp-action="Targets">🎯 Targets</a></li>
                     </ul>
                 </li>
-
-                <!-- Profile -->
-                <li class="nav-item">
-                    <a class="nav-link text-white" asp-controller="Account" asp-action="Profile">
-                        <i class="bi bi-person-circle me-1"></i> My Profile
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-white" asp-controller="Blog" asp-action="All">
+                        <i class="bi bi-journal-text me-1"></i> Blog
                     </a>
                 </li>
-            </ul>
 
-            <!-- Auth (Login/Logout) -->
+            </ul>
+           
+
             <ul class="navbar-nav ms-auto">
                 <partial name="_LoginPartial" />
             </ul>

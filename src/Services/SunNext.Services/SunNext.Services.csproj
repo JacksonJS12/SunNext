@@ -12,10 +12,16 @@
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.507">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\SunNext.Data.Common\SunNext.Data.Common.csproj" />
+    <ProjectReference Include="..\..\Data\SunNext.Data.Models\SunNext.Data.Models.csproj" />
+    <ProjectReference Include="..\SunNext.Services.Data\SunNext.Services.Data.csproj" />
   </ItemGroup>
 
 </Project>

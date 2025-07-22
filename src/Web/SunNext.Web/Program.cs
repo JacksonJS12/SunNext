@@ -2,6 +2,8 @@ using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SunNext.Data;
+using SunNext.Services.BlogPost;
+using SunNext.Services.Data;
 
 namespace SunNext.Web
 {
@@ -22,13 +24,15 @@ namespace SunNext.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using AutoMapper;
 
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Environment.EnvironmentName = Environments.Production;
+            
+            //builder.Environment.EnvironmentName = Environments.Production;
 
             ConfigureServices(builder.Services, builder.Configuration);
             var app = builder.Build();
@@ -65,6 +69,15 @@ namespace SunNext.Web
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
+            services.AddScoped<IBlogPostService, BlogPostService>();
+
+            services.AddAutoMapper(
+                config => { },
+                typeof(BlogProfile).Assembly
+            );
+
+
+                
             services.AddTransient<IEmailSender, NullMessageSender>();
         }
 
@@ -77,9 +90,7 @@ namespace SunNext.Web
                 dbContext.Database.Migrate();
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
-
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
-
+            
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/error/500");
