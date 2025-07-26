@@ -1,56 +1,62 @@
+@model SunNext.Web.ViewModels.SolarAssets.SolarAssetViewModel
+
 @{
     ViewData["Title"] = "Asset Details";
 }
 
 <div class="container py-5">
-    <div class="glass-card mb-5 mx-auto" style="max-width: 800px;">
-        <h2 class="text-center glow-text mb-4">☀️ Solar Asset Details</h2>
+    <div class="glass-card shadow-lg p-4">
+        <div class="row">
+            <div class="col-lg-7">
+                <h2 class="glow-text mb-4">☀️ @Model.Name</h2>
 
-        <!-- Basic Info -->
-        <div class="mb-4">
-            <h4 class="text-info mb-3">📄 General Info</h4>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item bg-transparent text-light border-0">
-                    <strong>Name:</strong> Sample Asset
-                </li>
-                <li class="list-group-item bg-transparent text-light border-0">
-                    <strong>Type:</strong> Solar Panel
-                </li>
-                <li class="list-group-item bg-transparent text-light border-0">
-                    <strong>Capacity:</strong> 50 kW
-                </li>
-                <li class="list-group-item bg-transparent text-light border-0">
-                    <strong>Location:</strong> Plovdiv, Bulgaria
-                </li>
-                <li class="list-group-item bg-transparent text-light border-0">
-                    <strong>Owner:</strong> Ivan Petrov
-                </li>
-            </ul>
-        </div>
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="glass-card p-3">
+                            <h5 class="text-info">⚡️ Power & Energy</h5>
+                            <p><strong>Power:</strong> @Model.PowerKw kW</p>
+                            <p><strong>Efficiency:</strong> @Model.EfficiencyPercent%</p>
+                            <p><strong>Capacity:</strong> @Model.CapacityKw kWp</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="glass-card p-3">
+                            <h5 class="text-info">📊 Energy Summary</h5>
+                            <p><strong>Today:</strong> @Model.EnergyTodayKWh kWh</p>
+                            <p><strong>This Month:</strong> @Model.EnergyMonthKWh kWh</p>
+                            <p><strong>This Year:</strong> @Model.EnergyYearKWh kWh</p>
+                            <p><strong>Total:</strong> @Model.EnergyTotalKWh kWh</p>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Two Column Section -->
-        <div class="row mb-5">
-            <!-- Map -->
-            <div class="col-md-6 mb-4">
-                <h5 class="text-info mb-2">📍 Map Location</h5>
-                <div id="map" class="rounded shadow" style="height: 300px;"></div>
-            </div>
+                <div class="glass-card p-3 mb-4">
+                    <h5 class="text-info">📄 Installer Info</h5>
+                    <p><strong>Installer:</strong> @Model.InstallerName</p>
+                    <p><strong>Email:</strong> @Model.InstallerEmail</p>
+                    <p><strong>Phone:</strong> @Model.InstallerPhone</p>
+                    <p><strong>Commissioned:</strong> @Model.CommissioningDate.ToString("yyyy-MM-dd")</p>
+                </div>
 
-            <!-- Battery Status -->
-            <div class="col-md-6 mb-4">
-                <h5 class="text-info mb-2">🔋 Battery Status</h5>
                 <div class="glass-card p-3">
-                    <p><strong>State of Charge:</strong> 82%</p>
-                    <p><strong>Health:</strong> Good</p>
-                    <p><strong>Cycle Count:</strong> 132</p>
+                    <h5 class="text-info">📍 Location</h5>
+                    <p><strong>Address:</strong> @Model.Address</p>
+                    <p><strong>Time Zone:</strong> @Model.TimeZone</p>
+                    <p><strong>Type:</strong> @Model.Type</p>
                 </div>
             </div>
-        </div>
 
-        <!-- Energy Chart -->
-        <div>
-            <h5 class="text-info mb-3">📊 Recent Energy Readings</h5>
-            <canvas id="energyChart" height="120"></canvas>
+            <div class="col-lg-5">
+                <div class="glass-card text-center mb-3">
+                    <img src="@Model.ImageUrl" alt="Asset Image" class="img-fluid rounded shadow" />
+                    <p class="mt-2 text-muted">Virtual Power Station</p>
+                </div>
+
+                <div class="glass-card p-3">
+                    <h5 class="text-info">📍 Map</h5>
+                    <div id="map" style="height: 300px;" class="rounded shadow"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -61,41 +67,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <script>
-        // Map coordinates
-        const latitude = 42.1354;
-        const longitude = 24.7453;
-
-        const map = L.map('map').setView([latitude, longitude], 13);
+        const map = L.map('map').setView([42.6975, 23.3242], 13); // Default location, replace if Model has Lat/Lng
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
-        L.marker([latitude, longitude]).addTo(map).bindPopup('Solar Asset Location').openPopup();
-
-        // Chart.js setup
-        new Chart(document.getElementById('energyChart'), {
-            type: 'line',
-            data: {
-                labels: ['08:00', '09:00', '10:00', '11:00'],
-                datasets: [{
-                    label: 'Energy (kWh)',
-                    data: [5, 15, 22, 30],
-                    borderWidth: 2,
-                    borderColor: 'rgba(0, 188, 255, 1)',
-                    backgroundColor: 'rgba(0, 188, 255, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 5
-                }]
-            },
-            options: {
-                scales: {
-                    x: { ticks: { color: "#ccc" } },
-                    y: { ticks: { color: "#ccc" } }
-                },
-                plugins: {
-                    legend: { labels: { color: "#ccc" } }
-                }
-            }
-        });
+        L.marker([42.6975, 23.3242]).addTo(map)
+            .bindPopup('Solar Asset Location')
+            .openPopup();
     </script>
 }

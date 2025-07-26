@@ -25,6 +25,7 @@
         }
 
         public DbSet<BlogPost> BlogPosts { get; set; }
+        public DbSet<SolarAsset> SolarAssets { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

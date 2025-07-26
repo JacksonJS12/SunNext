@@ -16,14 +16,14 @@ namespace SunNext.Services.Data
    public class BlogPostService : IBlogPostService
     {
         private readonly IDeletableEntityRepository<SunNext.Data.Models.BlogPost> _blogRepository;
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
 
         public BlogPostService(
             IDeletableEntityRepository<SunNext.Data.Models.BlogPost> blogRepository,
             IMapper mapper)
         {
             this._blogRepository = blogRepository;
-            this.mapper = mapper;
+            this._mapper = mapper;
         }
 
         public async Task<IEnumerable<BlogPostPrototype>> GetAllAsync()
@@ -33,7 +33,7 @@ namespace SunNext.Services.Data
                 .OrderByDescending(x => x.CreatedOn)
                 .ToListAsync();
 
-            return this.mapper.Map<IEnumerable<BlogPostPrototype>>(posts);
+            return this._mapper.Map<IEnumerable<BlogPostPrototype>>(posts);
         }
 
         public async Task<BlogPostPrototype> GetByIdAsync(string id)
@@ -42,12 +42,12 @@ namespace SunNext.Services.Data
                 .AllAsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            return this.mapper.Map<BlogPostPrototype>(post);
+            return this._mapper.Map<BlogPostPrototype>(post);
         }
 
         public async Task CreateAsync(BlogPostPrototype input)
         {
-            var entity = this.mapper.Map<SunNext.Data.Models.BlogPost>(input);
+            var entity = this._mapper.Map<SunNext.Data.Models.BlogPost>(input);
             entity.Id = Guid.NewGuid().ToString();
             await this._blogRepository.AddAsync(entity);
             await this._blogRepository.SaveChangesAsync();
@@ -62,7 +62,7 @@ namespace SunNext.Services.Data
             if (entity == null)
                 return false;
 
-            this.mapper.Map(input, entity);
+            this._mapper.Map(input, entity);
             await this._blogRepository.SaveChangesAsync();
             return true;
         }
@@ -80,5 +80,15 @@ namespace SunNext.Services.Data
             await this._blogRepository.SaveChangesAsync();
             return true;
         }
+        public async Task<IList<BlogPostPrototype>> GetAllPublishedAsync()
+        {
+            var posts =  await this._blogRepository.AllAsNoTracking()
+                .Where(p => p.IsPublished)
+                .OrderByDescending(p => p.CreatedOn)
+                .ToListAsync();
+            
+            return this._mapper.Map<List<BlogPostPrototype>>(posts);
+        }
+
     }
 }

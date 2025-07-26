@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace SunNext.Web.ViewModels.Blog;
 
@@ -11,5 +13,5 @@ public class BlogPostViewModel
     public string Content { get; set; }
     public DateTime CreatedOn { get; set; }
     public bool IsPublished { get; set; }
-    public string ImagesUrls { get; set; } 
+    public string ImagesUrls { get; set; }
 }

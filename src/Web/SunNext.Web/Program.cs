@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SunNext.Data;
 using SunNext.Services.BlogPost;
 using SunNext.Services.Data;
+using SunNext.Services.SolarAsset;
 
 namespace SunNext.Web
 {
@@ -70,10 +71,12 @@ namespace SunNext.Web
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             services.AddScoped<IBlogPostService, BlogPostService>();
+            services.AddScoped<ISolarAssetService, SolarAssetService>();
 
             services.AddAutoMapper(
                 config => { },
-                typeof(BlogProfile).Assembly
+                typeof(BlogProfile).Assembly,
+                typeof(SolarAssetProfile).Assembly
             );
 
 

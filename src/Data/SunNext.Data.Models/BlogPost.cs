@@ -7,13 +7,17 @@ namespace SunNext.Data.Models;
 
 public class BlogPost : BaseDeletableModel<string>
 {
+    public BlogPost()
+    {
+        this.Id = Guid.NewGuid().ToString();
+    }
     [Required]
-    public string Title { get; set; } = null!;
+    public string Title { get; set; }
 
     public string? Summary { get; set; }
 
     [Required]
-    public string Content { get; set; } = null!;
+    public string Content { get; set; } 
 
     public bool IsPublished { get; set; }
 

@@ -1,68 +1,114 @@
+@model SunNext.Web.ViewModels.SolarAssets.SolarAssetFormModel
 @{
     ViewData["Title"] = "Create New Asset";
 }
 
 <div class="container py-5">
-    <div class="glass-card mx-auto" style="max-width: 600px;">
-        <h2 class="text-center glow-text mb-4">⚡ Create New Asset</h2>
+    <div class="glass-card p-4 shadow-lg">
+        <h2 class="text-center glow-text mb-4">⚡ Create New Solar Asset</h2>
 
-        <form method="post">
-            <!-- Name -->
-            <div class="mb-3">
-                <label class="form-label">
-                    Name
-                    <i class="bi bi-info-circle ms-1 text-info" data-bs-toggle="tooltip"
-                       title="Enter a name for your solar asset. E.g. 'North Roof Array'."></i>
-                </label>
-                <input name="Name" class="form-control neon-input" placeholder="e.g. South PV Field" />
+        <form asp-action="Create" method="post">
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label">Name</label>
+                    <input asp-for="Name" class="form-control neon-input" placeholder="e.g. South PV Field" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Type</label>
+                    <select asp-for="Type" class="form-select neon-input">
+                        <option disabled selected>-- Select Type --</option>
+                        <option>Solar Panel</option>
+                        <option>Inverter</option>
+                        <option>Battery</option>
+                    </select>
+                </div>
             </div>
 
-            <!-- Type -->
-            <div class="mb-3">
-                <label class="form-label">
-                    Type
-                    <i class="bi bi-info-circle ms-1 text-info" data-bs-toggle="tooltip"
-                       title="Select the type of the asset, such as solar panel, inverter, or battery."></i>
-                </label>
-                <select name="Type" class="form-select neon-input">
-                    <option disabled selected>-- Select Type --</option>
-                    <option>Solar Panel</option>
-                    <option>Inverter</option>
-                    <option>Battery</option>
-                </select>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label">Power (kW)</label>
+                    <input asp-for="PowerKw" class="form-control" placeholder="e.g. 5.5" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Capacity (kW)</label>
+                    <input asp-for="CapacityKw" class="form-control" placeholder="e.g. 6.0" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Efficiency (%)</label>
+                    <input asp-for="EfficiencyPercent" class="form-control" placeholder="e.g. 97.8" />
+                </div>
             </div>
 
-            <!-- Capacity -->
-            <div class="mb-3">
-                <label class="form-label">
-                    Capacity (kW)
-                    <i class="bi bi-info-circle ms-1 text-info" data-bs-toggle="tooltip"
-                       title="Specify the maximum energy output of the asset in kilowatts."></i>
-                </label>
-                <input name="Capacity" class="form-control neon-input" placeholder="e.g. 100" />
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <label class="form-label">Today (kWh)</label>
+                    <input asp-for="EnergyTodayKWh" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Month (kWh)</label>
+                    <input asp-for="EnergyMonthKWh" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Year (kWh)</label>
+                    <input asp-for="EnergyYearKWh" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Total (kWh)</label>
+                    <input asp-for="EnergyTotalKWh" class="form-control" />
+                </div>
             </div>
 
-            <!-- Location -->
-            <div class="mb-3">
-                <label class="form-label">
-                    Location
-                    <i class="bi bi-info-circle ms-1 text-info" data-bs-toggle="tooltip"
-                       title="Location where the asset is physically installed."></i>
-                </label>
-                <input name="Location" class="form-control neon-input" placeholder="e.g. Sofia" />
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label">Location</label>
+                    <input asp-for="Location" class="form-control" placeholder="e.g. Sofia" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Time Zone</label>
+                    <input asp-for="TimeZone" class="form-control" placeholder="e.g. Europe/Sofia" />
+                </div>
             </div>
 
-            <!-- Buttons -->
+            <div class="mb-4">
+                <label class="form-label">Commissioning Date</label>
+                <input asp-for="CommissioningDate" type="date" class="form-control" />
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label">Installer Name</label>
+                    <input asp-for="InstallerName" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Installer Email</label>
+                    <input asp-for="InstallerEmail" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Installer Phone</label>
+                    <input asp-for="InstallerPhone" class="form-control" />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                <input asp-for="Address" class="form-control" />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Image URL</label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                <small class="form-text text-muted">Recommended: 1200×600px, JPG/WebP</small>
+            </div>
+
+            <input type="hidden" asp-for="CreatedOn" value="@DateTime.UtcNow" />
+            <input type="hidden" asp-for="LastUpdated" value="@DateTime.UtcNow" />
+
             <div class="d-flex justify-content-between mt-4">
-                <button type="submit" class="btn btn-success rounded-pill px-4 glow-btn">💾 Save</button>
-                <a href="@Url.Action("Index", "SolarAsset")" class="btn btn-secondary rounded-pill px-4">Cancel</a>
+                <button type="submit" class="btn btn-success rounded-pill px-4 glow-btn">
+                    <i class="bi bi-plus-circle me-1"></i> Create
+                </button>
+                <a asp-action="Index" class="btn btn-secondary rounded-pill px-4">Cancel</a>
             </div>
         </form>
     </div>
 </div>
-
-@section Scripts {
-    <script>
-        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
-    </script>
-}

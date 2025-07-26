@@ -22,6 +22,7 @@ public class BlogProfile : Profile
         CreateMap<BlogPostFormModel, BlogPostPrototype>();
         CreateMap<BlogPostPrototype, BlogPost>()
             .ForMember(dest => dest.Id, opt => opt.Ignore());
-
+        CreateMap<BlogPostPrototype, BlogPostViewModel>();
+        CreateMap<BlogPostFormModel, BlogPostPrototype>().ReverseMap();
     }
 }

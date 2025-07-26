@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SunNext.Common\SunNext.Common.csproj" />
     <ProjectReference Include="..\SunNext.Data.Common\SunNext.Data.Common.csproj" />
   </ItemGroup>
   
