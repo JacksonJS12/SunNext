@@ -1,0 +1,106 @@
+@model SunNext.Web.ViewModels.SolarAssets.SolarAssetFormModel
+
+<form method="post">
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <label class="form-label">Name</label>
+            <input asp-for="Name" class="form-control neon-input" placeholder="e.g. South PV Field" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Type</label>
+            <select asp-for="Type" class="form-select neon-input">
+                <option disabled selected>-- Select Type --</option>
+                <option>Solar Panel</option>
+                <option>Inverter</option>
+                <option>Battery</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label class="form-label">Power (kW)</label>
+            <input asp-for="PowerKw" class="form-control" placeholder="e.g. 5.5" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Capacity (kW)</label>
+            <input asp-for="CapacityKw" class="form-control" placeholder="e.g. 6.0" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Efficiency (%)</label>
+            <input asp-for="EfficiencyPercent" class="form-control" placeholder="e.g. 97.8" />
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <label class="form-label">Today (kWh)</label>
+            <input asp-for="EnergyTodayKWh" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Month (kWh)</label>
+            <input asp-for="EnergyMonthKWh" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Year (kWh)</label>
+            <input asp-for="EnergyYearKWh" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Total (kWh)</label>
+            <input asp-for="EnergyTotalKWh" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <label class="form-label">Location</label>
+            <input asp-for="Location" class="form-control" placeholder="e.g. Sofia" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Time Zone</label>
+            <input asp-for="TimeZone" class="form-control" placeholder="e.g. Europe/Sofia" />
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label">Commissioning Date</label>
+        <input asp-for="CommissioningDate" type="date" class="form-control" />
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label class="form-label">Installer Name</label>
+            <input asp-for="InstallerName" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Installer Email</label>
+            <input asp-for="InstallerEmail" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Installer Phone</label>
+            <input asp-for="InstallerPhone" class="form-control" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Address</label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label">Image URL</label>
+        <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+        <small class="form-text text-muted">Recommended: 1200×600px, JPG/WebP</small>
+    </div>
+
+    <input type="hidden" asp-for="CreatedOn" value="@DateTime.UtcNow" />
+    <input type="hidden" asp-for="LastUpdated" value="@DateTime.UtcNow" />
+    <input type="hidden" asp-for="OwnerId" value="@Model.OwnerId" />
+    
+    <div class="d-flex justify-content-between mt-4">
+        <button type="submit" class="btn btn-success rounded-pill px-4 glow-btn">
+            <i class="bi bi-plus-circle me-1"></i> Save
+        </button>
+        <a asp-action="All" class="btn btn-secondary rounded-pill px-4">Cancel</a>
+    </div>
+</form>

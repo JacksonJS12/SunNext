@@ -12,8 +12,8 @@ using SunNext.Data;
 namespace SunNext.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250726033029_AddedNewTable")]
-    partial class AddedNewTable
+    [Migration("20250726204852_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -362,6 +362,9 @@ namespace SunNext.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<double>("PowerKw")
                         .HasColumnType("float");
 
@@ -377,6 +380,8 @@ namespace SunNext.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("SolarAssets");
                 });
@@ -430,6 +435,15 @@ namespace SunNext.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SunNext.Data.Models.SolarAsset", b =>
+                {
+                    b.HasOne("SunNext.Data.Models.ApplicationUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("SunNext.Data.Models.ApplicationUser", b =>

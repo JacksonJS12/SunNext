@@ -1,5 +1,7 @@
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using SunNext.Data.Models;
 
 namespace SunNext.Web.ViewModels.SolarAssets
 {
@@ -11,6 +13,8 @@ namespace SunNext.Web.ViewModels.SolarAssets
         [Required]
         public string Type { get; set; } = null!;
 
+        
+        public string OwnerId { get; set; }
         public string? Location { get; set; }
 
         public double PowerKw { get; set; }

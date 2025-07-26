@@ -21,7 +21,8 @@ public class SolarAssetPrototype : BaseDeletableModel<string>
     [Required]
     [MaxLength(EntityValidationConstants.SolarAsset.TypeMaxLength)]
     public string Type { get; set; } = null!;
-
+        
+    public string OwnerId { get; set; }
     [MaxLength(EntityValidationConstants.SolarAsset.LocationMaxLength)]
     public string? Location { get; set; }
 

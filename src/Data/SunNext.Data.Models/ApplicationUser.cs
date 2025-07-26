@@ -16,6 +16,7 @@ namespace SunNext.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+            this.SolarAssets = new HashSet<SolarAsset>();
         }
 
         public string FirstName { get; set; }
@@ -29,6 +30,7 @@ namespace SunNext.Data.Models
         public DateTime? DeletedOn { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
+        public virtual ICollection<SolarAsset> SolarAssets { get; set; }
 
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
 

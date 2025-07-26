@@ -1,12 +1,12 @@
 @model IEnumerable<SunNext.Web.ViewModels.SolarAssets.SolarAssetViewModel>
 
 @{
-    ViewData["Title"] = "Solar Assets";
+    ViewData["Title"] = "Admin Solar Assets";
 }
 
 <div class="container-fluid py-5">
     <div class="text-center mb-4">
-        <h2 class="fw-bold text-white">☀️ Solar Assets Overview</h2>
+        <h2 class="fw-bold text-white">☀️ Admin Solar Assets Overview</h2>
         <p class="text-muted">Track and manage your smart solar systems across all locations</p>
     </div>
 
@@ -14,7 +14,9 @@
         <div class="row g-2 justify-content-between align-items-end">
             <div class="col-md-6">
                 <div class="input-group shadow-sm rounded-pill overflow-hidden">
-                    <input type="text" name="searchTerm" value="@Context.Request.Query["searchTerm"]" class="form-control border-0 px-4 py-2 bg-dark text-light" placeholder="Search by name or location..." />
+                    <input type="text" name="searchTerm" value="@Context.Request.Query["searchTerm"]"
+                           class="form-control border-0 px-4 py-2 bg-dark text-light"
+                           placeholder="Search by name or location..."/>
                     <button type="submit" class="btn btn-outline-info px-4">
                         <i class="bi bi-search"></i>
                     </button>
@@ -48,10 +50,10 @@
                     <tr class="custom-hover">
                         <td>
                             <div class="d-flex align-items-center gap-3">
-                                <img src="@asset.ImageUrl" class="rounded" width="48" height="48" style="object-fit: cover;" alt="Asset image" />
+                                <img src="@asset.ImageUrl" class="rounded" width="48" height="48"
+                                     style="object-fit: cover;" alt="Asset image"/>
                                 <div>
-                                    <strong>@asset.Name</strong><br />
-                                    @*<small class="text-muted">@asset.LastUpdate()</small>*@
+                                    <strong>@asset.Name</strong><br/>
                                 </div>
                             </div>
                         </td>
@@ -71,9 +73,28 @@
                         <td class="d-none d-md-table-cell">@asset.CreatedOn.ToString("yyyy-MM-dd HH:mm")</td>
                         <td class="text-end">
                             <div class="d-flex justify-content-end gap-2 flex-wrap">
-                                <a asp-action="Details" asp-route-id="@asset.Id" class="btn btn-sm btn-outline-primary rounded-pill">Details</a>
-                                <a asp-action="Edit" asp-route-id="@asset.Id" class="btn btn-sm btn-outline-warning rounded-pill">Edit</a>
-                                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@asset.Id" data-name="@asset.Name">Delete</button>
+                                <a asp-action="Details" asp-route-id="@asset.Id"
+                                   class="btn btn-sm btn-outline-primary rounded-pill">Details</a>
+                                <a asp-action="Edit" asp-route-id="@asset.Id"
+                                   class="btn btn-sm btn-outline-warning rounded-pill">Edit</a>
+                                
+                                @{
+                                    if (asset.IsDeleted)
+                                    {
+                                        <button type="button" class="btn btn-sm btn-outline-light rounded-pill"
+                                                data-bs-toggle="modal" data-bs-target="#unDeleteModal" data-id="@asset.Id"
+                                                data-name="@asset.Name">Undelete
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@asset.Id"
+                                                data-name="@asset.Name">Delete
+                                        </button>
+                                    }
+                                }
+                            
                             </div>
                         </td>
                     </tr>
@@ -89,7 +110,8 @@
         <div class="modal-content bg-dark text-white border-0">
             <div class="modal-header border-0">
                 <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Are you sure you want to delete asset <strong id="deleteAssetName"></strong>?
@@ -98,6 +120,27 @@
                 <form id="deleteForm" method="post">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="unDeleteModal" tabindex="-1" aria-labelledby="unDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-0">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="unDeleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to undelete asset <strong id="unDeleteAssetName"></strong>?
+            </div>
+            <div class="modal-footer border-0">
+                <form id="unDeleteForm" method="post">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-light">Yes, Un Delete</button>
                 </form>
             </div>
         </div>
@@ -115,4 +158,16 @@
             document.getElementById('deleteForm').action = `/SolarAsset/Delete/${id}`;
         });
     </script>
+
+    <script>
+        const unDeleteModal = document.getElementById('unDeleteModal'); 
+        unDeleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+            document.getElementById('unDeleteAssetName').textContent = name;
+            document.getElementById('unDeleteForm').action = `/SolarAsset/UnDelete/${id}`;
+        });
+    </script>
 }
+

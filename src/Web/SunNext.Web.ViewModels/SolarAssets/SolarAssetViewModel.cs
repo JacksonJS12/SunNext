@@ -1,11 +1,10 @@
 using System;
+using SunNext.Data.Common.Models;
 
 namespace SunNext.Web.ViewModels.SolarAssets;
 
-public class SolarAssetViewModel
+public class SolarAssetViewModel : BaseDeletableModel<string>
 {
-    public string Id { get; set; } = null!;
-
     public string Name { get; set; } = null!;
 
     public string Type { get; set; } = null!;
@@ -41,8 +40,4 @@ public class SolarAssetViewModel
     public string? Address { get; set; }
 
     public string? ImageUrl { get; set; }
-
-    public DateTime CreatedOn { get; set; }
-
-    public DateTime LastUpdated { get; set; }
 }
