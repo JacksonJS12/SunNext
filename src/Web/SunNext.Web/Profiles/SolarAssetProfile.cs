@@ -9,10 +9,23 @@ public class SolarAssetProfile : Profile
 {
     public SolarAssetProfile()
     {
-        CreateMap<SolarAssetPrototype, SolarAsset>().ReverseMap();
-        CreateMap<SolarAssetPrototype, SolarAssetViewModel>().ReverseMap();
         CreateMap<SolarAsset, SolarAssetPrototype>().ReverseMap();
-        CreateMap<SolarAssetFormModel, SolarAssetPrototype>();
-        CreateMap<SolarAssetPrototype, SolarAssetFormModel>();
+
+        CreateMap<SolarAssetViewModel, SolarAssetPrototype>().ReverseMap();
+
+        CreateMap<SolarAssetFormModel, SolarAssetPrototype>().ReverseMap();
+
+        CreateMap<AllSolarAssetsQueryModel, AllSolarAssetsQueryPrototype>().ReverseMap();
+
+        CreateMap<SolarAsset, AllSolarAssetsQueryPrototype>();
+
+        CreateMap<AllSolarAssetsQueryPrototype, SolarAssetViewModel>();
+        
+        CreateMap<SolarAsset, SolarAssetListItemPrototype>();
+        
+        CreateMap<SolarAssetListItemPrototype, SolarAssetViewModel>();
+        
+        CreateMap<SolarAssetListItemPrototype, SolarAssetListItemViewModel>();
+
     }
 }

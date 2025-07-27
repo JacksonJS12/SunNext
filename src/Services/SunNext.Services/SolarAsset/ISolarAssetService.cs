@@ -3,25 +3,23 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SunNext.Services.Data.Prototypes.SolarAsset;
 
-namespace SunNext.Services.SolarAsset;
-
-public interface ISolarAssetService
+namespace SunNext.Services.SolarAsset
 {
-    Task<IEnumerable<SolarAssetPrototype>> GetAllWithDeletedAsync();
+    public interface ISolarAssetService
+    {
+        Task<AllSolarAssetsFilteredAndPagedPrototype> AllAsync(AllSolarAssetsQueryPrototype queryModel, string userId);
 
-    Task<IEnumerable<SolarAssetPrototype>> GetFilteredAsync(string search, DateTime? from, DateTime? to, int page,
-        int pageSize, string userId);
+        Task<AllSolarAssetsFilteredAndPagedPrototype> AllWithDeletedAsync(AllSolarAssetsQueryPrototype queryModel);
 
-    Task<int> CountFilteredAsync(string search, DateTime? from, DateTime? to, string userId);
+        Task<SolarAssetPrototype> GetByIdAsync(string id, string userId);
 
-    Task<SolarAssetPrototype> GetByIdAsync(string id, string userId);
+        Task CreateAsync(SolarAssetPrototype input);
 
-    Task CreateAsync(SolarAssetPrototype asset);
+        Task<bool> UpdateAsync(string id, SolarAssetPrototype input, string userId);
 
-    Task<bool> UpdateAsync(string id, SolarAssetPrototype updated, string userId);
+        Task<bool> DeleteAsync(string id, string userId);
 
-    Task<bool> DeleteAsync(string id, string userId);
-    Task<IEnumerable<SolarAssetPrototype>> GetFilteredWithDeletedAsync(string search, DateTime? fromDate, DateTime? toDate, int page, int pageSize);
-    Task<int> CountFilteredWithDeletedAsync(string search, DateTime? fromDate, DateTime? toDate);
-    Task<bool> UnDeleteAsync(string id);
+        Task<bool> UnDeleteAsync(string id);
+        Task<bool> HardDeleteAsync(string id);
+    }
 }

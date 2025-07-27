@@ -24,31 +24,36 @@ namespace SunNext.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> All(string? search, DateTime? fromDate, DateTime? toDate, int page = 1,
-            int pageSize = 6)
+        public async Task<IActionResult> All([FromQuery] AllSolarAssetsQueryModel queryModel)
         {
             string userId = GetUserId();
-            var totalCount = await this._solarAssetService.CountFilteredAsync(search, fromDate, toDate, userId);
-            var assets =
-                await this._solarAssetService.GetFilteredAsync(search, fromDate, toDate, page, pageSize, userId);
 
-            var model = this._mapper.Map<IEnumerable<SolarAssetViewModel>>(assets);
+            var prototypeQueryModel = _mapper.Map<AllSolarAssetsQueryPrototype>(queryModel);
+            
+            AllSolarAssetsFilteredAndPagedPrototype prototype =
+                await this._solarAssetService.AllAsync(prototypeQueryModel, userId);
 
-            return View(model);
+            queryModel.SolarAssets = this._mapper.Map<IEnumerable<SolarAssetListItemViewModel>>(prototype.SolarAssets);
+            queryModel.TotalSolarAssets = prototype.TotalSolarAssetsCount;
+            
+
+            return View(queryModel);
         }
 
         [HttpGet]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        public async Task<IActionResult> AdminAll(string? search, DateTime? fromDate, DateTime? toDate, int page = 1,
-            int pageSize = 6)
+        public async Task<IActionResult> AdminAll([FromQuery] AllSolarAssetsQueryModel queryModel)
         {
-            var totalCount = await this._solarAssetService.CountFilteredWithDeletedAsync(search, fromDate, toDate);
-            var assets =
-                await this._solarAssetService.GetFilteredWithDeletedAsync(search, fromDate, toDate, page, pageSize);
+            var prototypeQueryModel = _mapper.Map<AllSolarAssetsQueryPrototype>(queryModel);
 
-            var model = this._mapper.Map<IEnumerable<SolarAssetViewModel>>(assets);
+            AllSolarAssetsFilteredAndPagedPrototype prototype =
+                await this._solarAssetService.AllWithDeletedAsync(prototypeQueryModel);
 
-            return View(model);
+            queryModel.SolarAssets = this._mapper.Map<IEnumerable<SolarAssetListItemViewModel>>(prototype.SolarAssets);
+            queryModel.TotalSolarAssets = prototype.TotalSolarAssetsCount;
+            
+
+            return View(queryModel);
         }
 
         [HttpGet]
@@ -102,15 +107,19 @@ namespace SunNext.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, SolarAssetFormModel model, SolarAssetPrototype prototype)
+        public async Task<IActionResult> Edit(string id, SolarAssetFormModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
 
+            var prototype = this._mapper.Map<SolarAssetPrototype>(model);
             prototype.Id = id;
             string userId = GetUserId();
 
-            await this._solarAssetService.UpdateAsync(id, prototype, userId);
+            bool success = await this._solarAssetService.UpdateAsync(id, prototype, userId);
+            if (!success)
+                return NotFound();
+
             return RedirectToAction(nameof(All));
         }
 
@@ -119,15 +128,32 @@ namespace SunNext.Web.Controllers
         {
             string userId = GetUserId();
 
-            await this._solarAssetService.DeleteAsync(id, userId);
+            bool success = await this._solarAssetService.DeleteAsync(id, userId);
+            if (!success)
+                return NotFound();
+
             return RedirectToAction(nameof(All));
         }
-        
+
         [HttpPost]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> UnDelete(string id)
         {
-            await this._solarAssetService.UnDeleteAsync(id);
+            bool success = await this._solarAssetService.UnDeleteAsync(id);
+            if (!success)
+                return NotFound();
+
+            return RedirectToAction(nameof(AdminAll));
+        }
+        
+        [HttpPost]
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        public async Task<IActionResult> HardDelete(string id)
+        {
+            bool success = await this._solarAssetService.HardDeleteAsync(id);
+            if (!success)
+                return NotFound();
+
             return RedirectToAction(nameof(AdminAll));
         }
     }

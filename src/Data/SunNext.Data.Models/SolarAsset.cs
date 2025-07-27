@@ -17,10 +17,9 @@ public class SolarAsset : BaseDeletableModel<string>
     [Required]
     [MaxLength(EntityValidationConstants.SolarAsset.NameMaxLength)]
     public string Name { get; set; } = null!;
-
     [Required]
     [MaxLength(EntityValidationConstants.SolarAsset.TypeMaxLength)]
-    public string Type { get; set; } = null!;
+    public string Type { get; set; } 
     public ApplicationUser Owner { get; set; }
         
     public string OwnerId { get; set; }

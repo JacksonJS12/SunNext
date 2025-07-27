@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using SunNext.Common.Enums;
 using SunNext.Data.Common.Repositories;
 using SunNext.Data.Models;
 using SunNext.Services.Data.Prototypes.SolarAsset;
@@ -15,6 +16,7 @@ namespace SunNext.Services.Data
     {
         private readonly IDeletableEntityRepository<SunNext.Data.Models.SolarAsset> _assetRepository;
         private readonly IMapper _mapper;
+        private ISolarAssetService _solarAssetServiceImplementation;
 
         public SolarAssetService(
             IDeletableEntityRepository<SunNext.Data.Models.SolarAsset> assetRepository,
@@ -23,40 +25,134 @@ namespace SunNext.Services.Data
             this._assetRepository = assetRepository;
             this._mapper = mapper;
         }
+        
 
-        public async Task<IEnumerable<SolarAssetPrototype>> GetAllWithDeletedAsync()
+        public async Task<AllSolarAssetsFilteredAndPagedPrototype> AllAsync(AllSolarAssetsQueryPrototype queryModel, string userId)
         {
-            var assets = await this._assetRepository
+            IQueryable<SunNext.Data.Models.SolarAsset> assetsQuery = this._assetRepository
                 .AllAsNoTracking()
-                .OrderByDescending(x => x.CreatedOn)
+                .Where(x => x.OwnerId == userId);
+
+            // Apply search filter
+            if (!string.IsNullOrWhiteSpace(queryModel.SearchString))
+            {
+                string wildCard = $"%{queryModel.SearchString.ToLower()}%";
+                assetsQuery = assetsQuery
+                    .Where(x => EF.Functions.Like(x.Name, wildCard) ||
+                               EF.Functions.Like(x.Location, wildCard));
+            }
+
+            // Apply solar asset type filter
+            if (!string.IsNullOrWhiteSpace(queryModel.SolarAssetType))
+            {
+                assetsQuery = assetsQuery
+                    .Where(x => x.Type == queryModel.SolarAssetType);
+            }
+
+            // Apply date filters
+            if (queryModel.InstallationDateFrom.HasValue)
+                assetsQuery = assetsQuery.Where(x => x.CreatedOn >= queryModel.InstallationDateFrom.Value);
+
+            if (queryModel.InstallationDateTo.HasValue)
+                assetsQuery = assetsQuery.Where(x => x.CreatedOn <= queryModel.InstallationDateTo.Value);
+
+            // Apply sorting
+            assetsQuery = queryModel.SolarAssetSorting switch
+            {
+                SolarAssetSorting.Newest => assetsQuery
+                    .OrderByDescending(x => x.CreatedOn),
+                SolarAssetSorting.Oldest => assetsQuery
+                    .OrderBy(x => x.CreatedOn),
+                SolarAssetSorting.PowerAscending => assetsQuery
+                    .OrderBy(x => x.PowerKw),
+                SolarAssetSorting.PowerDescending => assetsQuery
+                    .OrderByDescending(x => x.PowerKw),
+                SolarAssetSorting.NameAscending => assetsQuery
+                    .OrderBy(x => x.Name),
+                SolarAssetSorting.NameDescending => assetsQuery
+                    .OrderByDescending(x => x.Name),
+                _ => assetsQuery
+                    .OrderByDescending(x => x.CreatedOn)
+            };
+
+            // Get total count before pagination
+            int totalAssets = await assetsQuery.CountAsync();
+
+            // Apply pagination
+            var assets = await assetsQuery
+                .Skip((queryModel.CurrentPage - 1) * queryModel.SolarAssetsPerPage)
+                .Take(queryModel.SolarAssetsPerPage)
                 .ToListAsync();
 
-            return this._mapper.Map<IEnumerable<SolarAssetPrototype>>(assets);
+            var prototypes = this._mapper.Map<IEnumerable<SolarAssetListItemPrototype>>(assets);
+
+            return new AllSolarAssetsFilteredAndPagedPrototype()
+            {
+                TotalSolarAssetsCount = totalAssets,
+                SolarAssets = prototypes
+            };
         }
 
-        public async Task<IEnumerable<SolarAssetPrototype>> GetFilteredAsync(string search, DateTime? from,
-            DateTime? to, int page, int pageSize, string userId)
+        public async Task<AllSolarAssetsFilteredAndPagedPrototype> AllWithDeletedAsync(AllSolarAssetsQueryPrototype queryModel)
         {
-            var query = this._assetRepository.AllAsNoTracking().Where(x => x.OwnerId == userId);
-            
-            if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(x => x.Name.Contains(search) || x.Location.Contains(search));
+            IQueryable<SunNext.Data.Models.SolarAsset> assetsQuery = this._assetRepository
+                .AllAsNoTrackingWithDeleted();
 
-            if (from.HasValue)
-                query = query.Where(x => x.CreatedOn >= from.Value);
+            // Apply search filter
+            if (!string.IsNullOrWhiteSpace(queryModel.SearchString))
+            {
+                string wildCard = $"%{queryModel.SearchString.ToLower()}%";
+                assetsQuery = assetsQuery
+                    .Where(x => EF.Functions.Like(x.Name, wildCard) ||
+                               EF.Functions.Like(x.Location, wildCard));
+            }
 
-            if (to.HasValue)
-                query = query.Where(x => x.CreatedOn <= to.Value);
+            if (!string.IsNullOrWhiteSpace(queryModel.SolarAssetType))
+            {
+                assetsQuery = assetsQuery
+                    .Where(x => x.Type == queryModel.SolarAssetType);
+            }
 
-            var result = await query
-                .OrderByDescending(x => x.CreatedOn)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
+            if (queryModel.InstallationDateFrom.HasValue)
+                assetsQuery = assetsQuery.Where(x => x.CreatedOn >= queryModel.InstallationDateFrom.Value);
+
+            if (queryModel.InstallationDateTo.HasValue)
+                assetsQuery = assetsQuery.Where(x => x.CreatedOn <= queryModel.InstallationDateTo.Value);
+
+            assetsQuery = queryModel.SolarAssetSorting switch
+            {
+                SolarAssetSorting.Newest => assetsQuery
+                    .OrderByDescending(x => x.CreatedOn),
+                SolarAssetSorting.Oldest => assetsQuery
+                    .OrderBy(x => x.CreatedOn),
+                SolarAssetSorting.PowerAscending => assetsQuery
+                    .OrderBy(x => x.PowerKw),
+                SolarAssetSorting.PowerDescending => assetsQuery
+                    .OrderByDescending(x => x.PowerKw),
+                SolarAssetSorting.NameAscending => assetsQuery
+                    .OrderBy(x => x.Name),
+                SolarAssetSorting.NameDescending => assetsQuery
+                    .OrderByDescending(x => x.Name),
+                _ => assetsQuery
+                    .OrderByDescending(x => x.CreatedOn)
+            };
+
+            int totalAssets = await assetsQuery.CountAsync();
+
+            // Apply pagination
+            var assets = await assetsQuery
+                .Skip((queryModel.CurrentPage - 1) * queryModel.SolarAssetsPerPage)
+                .Take(queryModel.SolarAssetsPerPage)
                 .ToListAsync();
 
-            return this._mapper.Map<IList<SolarAssetPrototype>>(result);
-        }
+            var prototypes = this._mapper.Map<IEnumerable<SolarAssetListItemPrototype>>(assets);
 
+            return new AllSolarAssetsFilteredAndPagedPrototype()
+            {
+                TotalSolarAssetsCount = totalAssets,
+                SolarAssets = prototypes
+            };
+        }
 
         public async Task<SolarAssetPrototype> GetByIdAsync(string id, string userId)
         {
@@ -103,39 +199,6 @@ namespace SunNext.Services.Data
             return true;
         }
 
-        public async Task<IEnumerable<SolarAssetPrototype>> GetFilteredWithDeletedAsync(string search, DateTime? from,
-            DateTime? to, int page, int pageSize)
-        {
-            var query = this._assetRepository.AllAsNoTrackingWithDeleted();
-            
-            if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(x => x.Name.Contains(search) || x.Location.Contains(search));
-
-            if (from.HasValue)
-                query = query.Where(x => x.CreatedOn >= from.Value);
-
-            if (to.HasValue)
-                query = query.Where(x => x.CreatedOn <= to.Value);
-
-            var result = await query
-                .OrderByDescending(x => x.CreatedOn)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            return this._mapper.Map<IList<SolarAssetPrototype>>(result);
-        }
-
-        public async Task<int> CountFilteredWithDeletedAsync(string? search, DateTime? fromDate, DateTime? toDate)
-        {
-            var query = this._assetRepository.AllAsNoTrackingWithDeleted();
-
-            if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(x => x.Name.Contains(search) || x.Location.Contains(search));
-
-            return await query.CountAsync();
-        }
-
         public async Task<bool> UnDeleteAsync(string id)
         {
             var entity = await this._assetRepository
@@ -150,20 +213,18 @@ namespace SunNext.Services.Data
             return true;
         }
 
-        public async Task<int> CountFilteredAsync(string? search, DateTime? from, DateTime? to, string userId)
+        public async Task<bool> HardDeleteAsync(string id)
         {
-            var query = this._assetRepository.AllAsNoTracking().Where(x => x.OwnerId == userId && x.IsDeleted == false);
+            var entity = await this._assetRepository
+                .AllAsNoTrackingWithDeleted()
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(x => x.Name.Contains(search) || x.Location.Contains(search));
+            if (entity == null)
+                return false;
 
-            if (from.HasValue)
-                query = query.Where(x => x.CreatedOn >= from.Value);
-
-            if (to.HasValue)
-                query = query.Where(x => x.CreatedOn <= to.Value);
-
-            return await query.CountAsync();
+            this._assetRepository.HardDelete(entity);
+            await this._assetRepository.SaveChangesAsync();
+            return true;
         }
     }
 }
