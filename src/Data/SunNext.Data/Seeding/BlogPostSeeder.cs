@@ -11,7 +11,12 @@ namespace SunNext.Data.Seeding
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
-            var posts = new List<BlogPost>
+            if (dbContext.BlogPosts.Any())
+            {
+                return; 
+            }
+
+            var posts = new HashSet<BlogPost>
             {
                 new BlogPost
                 {

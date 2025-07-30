@@ -1,24 +1,55 @@
+@model SunNext.Web.ViewModels.Home.ContactFormViewModel
 @{
     ViewData["Title"] = "Contact";
 }
 
 <h2 class="mb-4">Contact Us</h2>
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <form method="post" class="col-md-6">
+    @Html.AntiForgeryToken()
+
     <div class="mb-3">
-        <label class="form-label">Your Name</label>
-        <input class="form-control" name="Name" required />
+        <label asp-for="Name" class="form-label">Your Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input class="form-control" name="Email" type="email" required />
+        <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" type="email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Message</label>
-        <textarea class="form-control" name="Message" rows="5" required></textarea>
+        <label asp-for="Message" class="form-label">Message</label>
+        <textarea asp-for="Message" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+        <div class="form-text">Minimum 10 characters, maximum 1000 characters.</div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Send Message</button>
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState[""] != null)
+    {
+        <div class="alert alert-danger">
+            @foreach (var error in ViewData.ModelState[""].Errors)
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">
+        <i class="bi bi-envelope"></i> Send Message
+    </button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
