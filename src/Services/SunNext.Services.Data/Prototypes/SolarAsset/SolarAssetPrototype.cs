@@ -7,67 +7,47 @@ namespace SunNext.Services.Data.Prototypes.SolarAsset;
 
 public class SolarAssetPrototype : BaseDeletableModel<string>
 {
-    public SolarAssetPrototype()
-    {
-        this.Id = Guid.NewGuid().ToString();
-        this.CreatedOn = DateTime.UtcNow;
-        this.LastUpdated = DateTime.UtcNow;
-    }
+    [Required] public string Id { get; set; } = null!;
 
     [Required]
-    [MaxLength(EntityValidationConstants.SolarAsset.NameMaxLength)]
+    [Display(Name = "Asset Name")]
+    [StringLength(100)]
     public string Name { get; set; } = null!;
 
     [Required]
-    [MaxLength(EntityValidationConstants.SolarAsset.TypeMaxLength)]
+    [Display(Name = "System Type")]
+    [StringLength(50)]
     public string Type { get; set; } = null!;
-        
-    public string OwnerId { get; set; }
-    [MaxLength(EntityValidationConstants.SolarAsset.LocationMaxLength)]
-    public string? Location { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.PowerMin, double.MaxValue)]
-    public double PowerKw { get; set; }
+    [Required] public string OwnerId { get; set; } = null!;
 
-    [Range(EntityValidationConstants.SolarAsset.CapacityMin, double.MaxValue)]
-    public double CapacityKw { get; set; }
+    [Range(0, double.MaxValue)] public double PowerKw { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EfficiencyMin, EntityValidationConstants.SolarAsset.EfficiencyMax)]
-    public double EfficiencyPercent { get; set; }
+    [Range(0, double.MaxValue)] public double CapacityKw { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
-    public double EnergyTodayKWh { get; set; }
+    [Range(0, 100)] public double EfficiencyPercent { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
-    public double EnergyMonthKWh { get; set; }
+    [Range(0, double.MaxValue)] public double EnergyTodayKWh { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
-    public double EnergyYearKWh { get; set; }
+    [Range(0, double.MaxValue)] public double EnergyMonthKWh { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
-    public double EnergyTotalKWh { get; set; }
+    [Range(0, double.MaxValue)] public double EnergyYearKWh { get; set; }
+
+    [Range(0, double.MaxValue)] public double EnergyTotalKWh { get; set; }
 
     public bool IsOnline { get; set; }
 
-    public DateTime CommissioningDate { get; set; }
+    [DataType(DataType.Date)] public DateTime CommissioningDate { get; set; }
 
-    [MaxLength(EntityValidationConstants.SolarAsset.InstallerNameMaxLength)]
-    public string? InstallerName { get; set; }
+    [StringLength(100)] public string? InstallerName { get; set; }
 
-    [MaxLength(EntityValidationConstants.SolarAsset.InstallerEmailMaxLength)]
-    public string? InstallerEmail { get; set; }
+    [EmailAddress] public string? InstallerEmail { get; set; }
 
-    [MaxLength(EntityValidationConstants.SolarAsset.InstallerPhoneMaxLength)]
-    public string? InstallerPhone { get; set; }
+    [Phone] public string? InstallerPhone { get; set; }
 
-    [MaxLength(EntityValidationConstants.SolarAsset.TimeZoneMaxLength)]
     public string? TimeZone { get; set; }
 
-    [MaxLength(EntityValidationConstants.SolarAsset.AddressMaxLength)]
-    public string? Address { get; set; }
+    [StringLength(200)] public string? Address { get; set; }
 
-    [MaxLength(EntityValidationConstants.SolarAsset.ImageUrlMaxLength)]
-    public string? ImageUrl { get; set; }
-
-    public DateTime LastUpdated { get; set; }
+    [Url] public string? ImageUrl { get; set; }
 }

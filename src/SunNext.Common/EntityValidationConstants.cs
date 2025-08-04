@@ -6,7 +6,6 @@ namespace SunNext.Common
         {
             public const int NameMaxLength = 100;
             public const int TypeMaxLength = 50;
-            public const int LocationMaxLength = 100;
             public const int InstallerNameMaxLength = 100;
             public const int InstallerEmailMaxLength = 100;
             public const int InstallerPhoneMaxLength = 30;

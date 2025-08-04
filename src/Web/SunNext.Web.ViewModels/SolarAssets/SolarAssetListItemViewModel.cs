@@ -10,8 +10,6 @@ namespace SunNext.Web.ViewModels.SolarAssets
 
         public string Type { get; set; }
 
-        public string? Location { get; set; }
-
         public double PowerKw { get; set; }
 
         public DateTime CreatedOn { get; set; }

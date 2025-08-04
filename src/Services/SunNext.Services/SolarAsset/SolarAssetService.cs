@@ -38,8 +38,7 @@ namespace SunNext.Services.Data
             {
                 string wildCard = $"%{queryModel.SearchString.ToLower()}%";
                 assetsQuery = assetsQuery
-                    .Where(x => EF.Functions.Like(x.Name, wildCard) ||
-                               EF.Functions.Like(x.Location, wildCard));
+                    .Where(x => EF.Functions.Like(x.Name, wildCard));
             }
 
             // Apply solar asset type filter
@@ -103,8 +102,7 @@ namespace SunNext.Services.Data
             {
                 string wildCard = $"%{queryModel.SearchString.ToLower()}%";
                 assetsQuery = assetsQuery
-                    .Where(x => EF.Functions.Like(x.Name, wildCard) ||
-                               EF.Functions.Like(x.Location, wildCard));
+                    .Where(x => EF.Functions.Like(x.Name, wildCard));
             }
 
             if (!string.IsNullOrWhiteSpace(queryModel.SolarAssetType))

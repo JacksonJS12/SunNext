@@ -1,106 +1,285 @@
 @model SunNext.Web.ViewModels.SolarAssets.SolarAssetFormModel
 
-<form method="post">
-    <div class="row g-3 mb-4">
-        <div class="col-md-6">
-            <label class="form-label">Name</label>
-            <input asp-for="Name" class="form-control neon-input" placeholder="e.g. South PV Field" />
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">Type</label>
-            <select asp-for="Type" class="form-select neon-input">
-                <option disabled selected>-- Select Type --</option>
-                <option>Solar Panel</option>
-                <option>Inverter</option>
-                <option>Battery</option>
-            </select>
-        </div>
+<style>
+    body {
+        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+        color: #ffffff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+    }
+
+    .page-header {
+        padding: 2rem 0;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .form-title {
+        font-size: 2.2rem;
+        font-weight: 300;
+        margin-bottom: 0.5rem;
+        color: #ffffff;
+    }
+
+    .form-subtitle {
+        color: #888;
+        font-size: 1rem;
+    }
+
+    .dark-card {
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .dark-card:hover {
+        background: rgba(0, 0, 0, 0.5);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 400;
+        color: #ffffff;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .form-label {
+        color: #aaa;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .form-control, .form-select {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        color: #ffffff;
+        padding: 0.75rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        background: rgba(0, 0, 0, 0.4);
+        border-color: rgba(255, 255, 255, 0.4);
+        color: #ffffff;
+        box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1);
+    }
+
+    .form-control::placeholder {
+        color: #666;
+    }
+
+    .form-select option {
+        background: #1a1a2e;
+        color: #ffffff;
+    }
+
+    .form-text {
+        color: #666;
+        font-size: 0.8rem;
+    }
+
+    .btn-success {
+        background: rgba(34, 197, 94, 0.2);
+        border: 1px solid rgba(34, 197, 94, 0.5);
+        color: #22c55e;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+        background: rgba(34, 197, 94, 0.3);
+        border-color: #22c55e;
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #aaa;
+        font-weight: 400;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background: rgba(0, 0, 0, 0.4);
+        border-color: rgba(255, 255, 255, 0.3);
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+    .fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+        opacity: 0;
+    }
+
+    .fade-in:nth-child(1) { animation-delay: 0.1s; }
+    .fade-in:nth-child(2) { animation-delay: 0.2s; }
+    .fade-in:nth-child(3) { animation-delay: 0.3s; }
+    .fade-in:nth-child(4) { animation-delay: 0.4s; }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="container py-4">
+    <div class="page-header">
+        <h1 class="form-title">☀️ Solar Asset Configuration</h1>
+        <p class="form-subtitle">Configure a real-world solar system with accurate data</p>
     </div>
 
-    <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <label class="form-label">Power (kW)</label>
-            <input asp-for="PowerKw" class="form-control" placeholder="e.g. 5.5" />
+    <form method="post">
+        <div class="dark-card fade-in">
+            <h5 class="section-title">Basic Information</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label asp-for="Name" class="form-label">Asset Name</label>
+                    <input asp-for="Name" class="form-control" placeholder="e.g. North-East PV Cluster" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Type" class="form-label">System Type</label>
+                    <select asp-for="Type" class="form-select">
+                        <option disabled selected>-- Select Type --</option>
+                        <option>GridTied</option>
+                        <option>OffGrid</option>
+                        <option>Hybrid</option>
+                        <option>SolarPanel</option>
+                        <option>Inverter</option>
+                        <option>Battery</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger small"></span>
+                    <small class="form-text">Choose based on configuration: GridTied = no battery, OffGrid = with battery, Hybrid = both</small>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <label class="form-label">Capacity (kW)</label>
-            <input asp-for="CapacityKw" class="form-control" placeholder="e.g. 6.0" />
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">Efficiency (%)</label>
-            <input asp-for="EfficiencyPercent" class="form-control" placeholder="e.g. 97.8" />
-        </div>
-    </div>
 
-    <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <label class="form-label">Today (kWh)</label>
-            <input asp-for="EnergyTodayKWh" class="form-control" />
+        <div class="dark-card fade-in">
+            <h5 class="section-title">Technical Specifications</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label asp-for="PowerKw" class="form-label">Max Output Power (kW)</label>
+                    <input asp-for="PowerKw" class="form-control" placeholder="e.g. 50.0" />
+                    <span asp-validation-for="PowerKw" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="CapacityKw" class="form-label">Installed Capacity (kWp)</label>
+                    <input asp-for="CapacityKw" class="form-control" placeholder="e.g. 60.0" />
+                    <span asp-validation-for="CapacityKw" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="EfficiencyPercent" class="form-label">System Efficiency (%)</label>
+                    <input asp-for="EfficiencyPercent" class="form-control" placeholder="e.g. 97.5" />
+                    <span asp-validation-for="EfficiencyPercent" class="text-danger small"></span>
+                </div>
+            </div>
         </div>
-        <div class="col-md-3">
-            <label class="form-label">Month (kWh)</label>
-            <input asp-for="EnergyMonthKWh" class="form-control" />
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Year (kWh)</label>
-            <input asp-for="EnergyYearKWh" class="form-control" />
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Total (kWh)</label>
-            <input asp-for="EnergyTotalKWh" class="form-control" />
-        </div>
-    </div>
 
-    <div class="row g-3 mb-4">
-        <div class="col-md-6">
-            <label class="form-label">Location</label>
-            <input asp-for="Location" class="form-control" placeholder="e.g. Sofia" />
+        <div class="dark-card fade-in">
+            <h5 class="section-title">Energy Monitoring</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <label asp-for="EnergyTodayKWh" class="form-label">Today (kWh)</label>
+                    <input asp-for="EnergyTodayKWh" class="form-control" placeholder="e.g. 35.4" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="EnergyMonthKWh" class="form-label">This Month (kWh)</label>
+                    <input asp-for="EnergyMonthKWh" class="form-control" placeholder="e.g. 800.0" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="EnergyYearKWh" class="form-label">This Year (kWh)</label>
+                    <input asp-for="EnergyYearKWh" class="form-control" placeholder="e.g. 10200.0" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="EnergyTotalKWh" class="form-label">Total (kWh)</label>
+                    <input asp-for="EnergyTotalKWh" class="form-control" placeholder="e.g. 40500.0" />
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <label class="form-label">Time Zone</label>
-            <input asp-for="TimeZone" class="form-control" placeholder="e.g. Europe/Sofia" />
+
+        <div class="dark-card fade-in">
+            <h5 class="section-title">Installation & Ownership</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label asp-for="CommissioningDate" class="form-label">Commissioning Date</label>
+                    <input asp-for="CommissioningDate" type="date" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="TimeZone" class="form-label">Time Zone</label>
+                    <input asp-for="TimeZone" class="form-control" placeholder="Europe/Sofia" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="InstallerName" class="form-label">Installer Name</label>
+                    <input asp-for="InstallerName" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="InstallerEmail" class="form-label">Installer Email</label>
+                    <input asp-for="InstallerEmail" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="InstallerPhone" class="form-label">Installer Phone</label>
+                    <input asp-for="InstallerPhone" class="form-control" />
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="mb-4">
-        <label class="form-label">Commissioning Date</label>
-        <input asp-for="CommissioningDate" type="date" class="form-control" />
-    </div>
-
-    <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <label class="form-label">Installer Name</label>
-            <input asp-for="InstallerName" class="form-control" />
+        <div class="dark-card fade-in">
+            <h5 class="section-title">Address & Media</h5>
+            <div class="mb-3">
+                <label asp-for="Address" class="form-label">Installation Address</label>
+                <input asp-for="Address" class="form-control" placeholder="e.g. Main St 12, Plovdiv, Bulgaria" />
+            </div>
+            <div class="mb-4">
+                <label asp-for="ImageUrl" class="form-label">Asset Image URL</label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="https://example.com/pv-image.jpg" />
+            </div>
         </div>
-        <div class="col-md-4">
-            <label class="form-label">Installer Email</label>
-            <input asp-for="InstallerEmail" class="form-control" />
+
+        <input type="hidden" asp-for="CreatedOn" value="@DateTime.UtcNow" />
+        <input type="hidden" asp-for="LastUpdated" value="@DateTime.UtcNow" />
+        <input type="hidden" asp-for="OwnerId" value="@Model.OwnerId" />
+
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-success rounded-pill px-4">
+                <i class="bi bi-check-circle me-2"></i>Save Asset
+            </button>
+            <a asp-action="All" class="btn btn-secondary rounded-pill px-4">
+                <i class="bi bi-x-circle me-2"></i>Cancel
+            </a>
         </div>
-        <div class="col-md-4">
-            <label class="form-label">Installer Phone</label>
-            <input asp-for="InstallerPhone" class="form-control" />
-        </div>
-    </div>
+    </form>
+</div>
 
-    <div class="mb-3">
-        <label class="form-label">Address</label>
-        <input asp-for="Address" class="form-control" />
-    </div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
 
-    <div class="mb-4">
-        <label class="form-label">Image URL</label>
-        <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
-        <small class="form-text text-muted">Recommended: 1200×600px, JPG/WebP</small>
-    </div>
-
-    <input type="hidden" asp-for="CreatedOn" value="@DateTime.UtcNow" />
-    <input type="hidden" asp-for="LastUpdated" value="@DateTime.UtcNow" />
-    <input type="hidden" asp-for="OwnerId" value="@Model.OwnerId" />
-    
-    <div class="d-flex justify-content-between mt-4">
-        <button type="submit" class="btn btn-success rounded-pill px-4 glow-btn">
-            <i class="bi bi-plus-circle me-1"></i> Save
-        </button>
-        <a asp-action="All" class="btn btn-secondary rounded-pill px-4">Cancel</a>
-    </div>
-</form>
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    });
+</script>

@@ -1,9 +1,12 @@
 using System;
+using System.Globalization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using SunNext.Data;
 using SunNext.Services.BlogPost;
 using SunNext.Services.Data;
+using SunNext.Services.Market;
 using SunNext.Services.SolarAsset;
 
 namespace SunNext.Web
@@ -56,6 +59,21 @@ namespace SunNext.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var bulgarianCulture = new CultureInfo("bg-BG");
+                
+                options.DefaultRequestCulture = new RequestCulture(bulgarianCulture);
+                options.SupportedCultures = new[] { bulgarianCulture };
+                options.SupportedUICultures = new[] { bulgarianCulture };
+                
+                options.RequestCultureProviders.Clear();
+                options.RequestCultureProviders.Add(new CustomRequestCultureProvider(async context =>
+                {
+                    return new ProviderCultureResult("bg-BG");
+                }));
+            });
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -73,20 +91,20 @@ namespace SunNext.Web
             services.AddScoped<IBlogPostService, BlogPostService>();
             services.AddScoped<ISolarAssetService, SolarAssetService>();
 
+            services.AddHttpClient<IMarketService, MarketService>();
+            services.AddScoped<IMarketService, MarketService>();
+
             services.AddAutoMapper(
                 config => { },
                 typeof(BlogProfile).Assembly,
                 typeof(SolarAssetProfile).Assembly
             );
 
-
-                
             services.AddTransient<IEmailSender, NullMessageSender>();
         }
 
         private static void Configure(WebApplication app)
         {
-            // Seed data on application startup
             using (var serviceScope = app.Services.CreateScope())
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -118,6 +136,8 @@ namespace SunNext.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseRequestLocalization();
 
             app.UseRouting();
 

@@ -17,14 +17,13 @@ public class SolarAsset : BaseDeletableModel<string>
     [Required]
     [MaxLength(EntityValidationConstants.SolarAsset.NameMaxLength)]
     public string Name { get; set; } = null!;
+
     [Required]
     [MaxLength(EntityValidationConstants.SolarAsset.TypeMaxLength)]
-    public string Type { get; set; } 
-    public ApplicationUser Owner { get; set; }
-        
-    public string OwnerId { get; set; }
-    [MaxLength(EntityValidationConstants.SolarAsset.LocationMaxLength)]
-    public string? Location { get; set; }
+    public string Type { get; set; } = null!;
+
+    public ApplicationUser Owner { get; set; } = null!;
+    public string OwnerId { get; set; } = null!;
 
     [Range(EntityValidationConstants.SolarAsset.PowerMin, double.MaxValue)]
     public double PowerKw { get; set; }
@@ -46,6 +45,10 @@ public class SolarAsset : BaseDeletableModel<string>
 
     [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
     public double EnergyTotalKWh { get; set; }
+
+    public bool IsOnline { get; set; }
+
+    public DateTime CommissioningDate { get; set; }
 
     [MaxLength(EntityValidationConstants.SolarAsset.InstallerNameMaxLength)]
     public string? InstallerName { get; set; }

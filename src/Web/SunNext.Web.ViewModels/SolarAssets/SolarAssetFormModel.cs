@@ -1,57 +1,80 @@
 using System;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using SunNext.Data.Models;
 
-namespace SunNext.Web.ViewModels.SolarAssets
+namespace SunNext.Web.ViewModels.SolarAssets;
+
+public class SolarAssetFormModel
 {
-    public class SolarAssetFormModel
-    {
-        [Required]
-        public string Name { get; set; } = null!;
+    [Required]
+    [Display(Name = "Asset Name")]
+    [StringLength(100)]
+    public string Name { get; set; } = null!;
 
-        [Required]
-        public string Type { get; set; } = null!;
+    [Required]
+    [Display(Name = "System Type")]
+    [StringLength(50)]
+    public string Type { get; set; } = null!;
 
-        
-        public string OwnerId { get; set; }
-        public string? Location { get; set; }
+    [Required]
+    public string OwnerId { get; set; } = null!;
 
-        public double PowerKw { get; set; }
+    [Range(0, double.MaxValue)]
+    [Display(Name = "Power (kW)")]
+    public double PowerKw { get; set; }
 
-        public double CapacityKw { get; set; }
+    [Range(0, double.MaxValue)]
+    [Display(Name = "Capacity (kWp)")]
+    public double CapacityKw { get; set; }
 
-        public double EfficiencyPercent { get; set; }
+    [Range(0, 100)]
+    [Display(Name = "Efficiency (%)")]
+    public double EfficiencyPercent { get; set; }
 
-        public double EnergyTodayKWh { get; set; }
+    [Range(0, double.MaxValue)]
+    [Display(Name = "Today's Energy (kWh)")]
+    public double EnergyTodayKWh { get; set; }
 
-        public double EnergyMonthKWh { get; set; }
+    [Range(0, double.MaxValue)]
+    [Display(Name = "Monthly Energy (kWh)")]
+    public double EnergyMonthKWh { get; set; }
 
-        public double EnergyYearKWh { get; set; }
+    [Range(0, double.MaxValue)]
+    [Display(Name = "Yearly Energy (kWh)")]
+    public double EnergyYearKWh { get; set; }
 
-        public double EnergyTotalKWh { get; set; }
+    [Range(0, double.MaxValue)]
+    [Display(Name = "Total Energy (kWh)")]
+    public double EnergyTotalKWh { get; set; }
 
-        public bool IsOnline { get; set; }
+    public bool IsOnline { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime CommissioningDate { get; set; }
+    [DataType(DataType.Date)]
+    [Display(Name = "Commissioning Date")]
+    public DateTime CommissioningDate { get; set; }
 
-        public string? InstallerName { get; set; }
+    [Display(Name = "Installer Name")]
+    [StringLength(100)]
+    public string? InstallerName { get; set; }
 
-        [EmailAddress]
-        public string? InstallerEmail { get; set; }
+    [EmailAddress]
+    [Display(Name = "Installer Email")]
+    public string? InstallerEmail { get; set; }
 
-        public string? InstallerPhone { get; set; }
+    [Phone]
+    [Display(Name = "Installer Phone")]
+    public string? InstallerPhone { get; set; }
 
-        public string? TimeZone { get; set; }
+    [Display(Name = "Time Zone")]
+    public string? TimeZone { get; set; }
 
-        public string? Address { get; set; }
+    [Display(Name = "Installation Address")]
+    [StringLength(200)]
+    public string? Address { get; set; }
 
-        [Url]
-        public string? ImageUrl { get; set; }
+    [Url]
+    [Display(Name = "Image URL")]
+    public string? ImageUrl { get; set; }
 
-        public DateTime CreatedOn { get; set; }
-
-        public DateTime LastUpdated { get; set; }
-    }
+    public DateTime CreatedOn { get; set; }
+    public DateTime LastUpdated { get; set; }
 }

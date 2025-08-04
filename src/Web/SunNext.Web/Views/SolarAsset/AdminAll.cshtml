@@ -50,18 +50,6 @@
 
                 </select>
             </div>
-            <div class="col-md-4">
-                <div class="input-group shadow-sm overflow-hidden">
-                    <input type="text"
-                           name="SearchString"
-                           value="@Model.SearchString"
-                           class="form-control border-0 px-4 py-2 bg-dark text-light"
-                           placeholder="Search by name or location..."/>
-                    <button type="submit" class="btn btn-outline-info px-4">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </div>
             <div class="col-md-1">
                 <label asp-for="SolarAssetsPerPage" class="form-label text-light small">Per Page</label>
                 <select asp-for="SolarAssetsPerPage"
@@ -125,7 +113,6 @@
                                 }
                             </td>
                             <td>@($"{asset.PowerKw:F2} kW")</td>
-                            <td class="d-none d-md-table-cell">@asset.Location</td>
                             <td class="d-none d-md-table-cell">@asset.CreatedOn.ToString("yyyy-MM-dd HH:mm")</td>
                             <td class="text-end">
                                 <div class="d-flex justify-content-end gap-2 flex-wrap">

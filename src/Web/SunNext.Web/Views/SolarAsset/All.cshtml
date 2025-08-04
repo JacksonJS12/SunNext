@@ -89,7 +89,6 @@
                         <th class="d-none d-sm-table-cell">Type</th>
                         <th>Status</th>
                         <th>Power</th>
-                        <th class="d-none d-md-table-cell">Location</th>
                         <th class="d-none d-md-table-cell">Created</th>
                         <th class="text-end">Actions</th>
                     </tr>
@@ -128,7 +127,6 @@
                                 }
                             </td>
                             <td>@($"{asset.PowerKw:F2} kW")</td>
-                            <td class="d-none d-md-table-cell">@asset.Location</td>
                             <td class="d-none d-md-table-cell">@asset.CreatedOn.ToString("dd MM yyyy")</td>
                             <td class="text-end">
                                 <div class="d-flex justify-content-end gap-2 flex-wrap">
