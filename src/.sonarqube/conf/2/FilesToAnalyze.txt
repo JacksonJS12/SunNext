@@ -1,4 +1,0 @@
-﻿C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Messaging\EmailAttachment.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Messaging\IEmailSender.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Messaging\NullMessageSender.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Messaging\SendGridEmailSender.cs

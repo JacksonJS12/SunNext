@@ -1,5 +1,0 @@
-﻿C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Mapping\AutoMapperConfig.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Mapping\IHaveCustomMappings.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Mapping\IMapFrom.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Mapping\IMapTo.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Mapping\QueryableMappingExtensions.cs

@@ -1,7 +1,0 @@
-﻿C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Common\IDbQueryRunner.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Common\Models\BaseDeletableModel.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Common\Models\BaseModel.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Common\Models\IAuditInfo.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Common\Models\IDeletableEntity.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Common\Repositories\IDeletableEntityRepository.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Common\Repositories\IRepository.cs

@@ -1,3 +1,0 @@
-﻿C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Tests\Sandbox\Program.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Tests\Sandbox\SandboxOptions.cs
-C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Tests\Sandbox\appsettings.json
