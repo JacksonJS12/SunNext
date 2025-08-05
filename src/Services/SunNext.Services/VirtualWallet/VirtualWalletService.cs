@@ -12,10 +12,10 @@ namespace SunNext.Services.VirtualWallet;
 
 public class VirtualWalletService : IVirtualWalletService
 {
-    private readonly IDeletableEntityRepository<VirtualWallet> _walletRepository;
+    private readonly IDeletableEntityRepository<SunNext.Data.Models.VirtualWallet> _walletRepository;
     private readonly IMapper _mapper;
 
-    public VirtualWalletService(IDeletableEntityRepository<VirtualWallet> walletRepository, IMapper mapper)
+    public VirtualWalletService(IDeletableEntityRepository<SunNext.Data.Models.VirtualWallet> walletRepository, IMapper mapper)
     {
         this._walletRepository = walletRepository;
         this._mapper = mapper;

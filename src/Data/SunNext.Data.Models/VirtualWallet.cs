@@ -4,9 +4,9 @@ using SunNext.Data.Common.Models;
 
 namespace SunNext.Data.Models;
 
-public class VirtualEnergyWallet : BaseDeletableModel<string>
+public class VirtualWallet : BaseDeletableModel<string>
 {
-    public VirtualEnergyWallet()
+    public VirtualWallet()
     {
         this.Id = Guid.NewGuid().ToString();
     }
@@ -17,6 +17,7 @@ public class VirtualEnergyWallet : BaseDeletableModel<string>
     public List<Battery> LinkedBatteries { get; set; } = new();
     public string OwnerId { get; set; }
     public ApplicationUser Owner { get; set; }
+    public bool WasChargedToday { get; set; }
 
     public List<WalletTransaction> Transactions { get; set; } = new();
 
