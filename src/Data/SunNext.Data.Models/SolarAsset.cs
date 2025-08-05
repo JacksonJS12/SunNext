@@ -67,4 +67,13 @@ public class SolarAsset : BaseDeletableModel<string>
 
     [MaxLength(EntityValidationConstants.SolarAsset.ImageUrlMaxLength)]
     public string? ImageUrl { get; set; }
+
+    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
+    public double DailyEnergyNeedKWh { get; set; }
+
+    [Range(0, 100)]
+    public double LocalReservePercent { get; set; }
+
+    public bool CanSellToMarket { get; set; }
+    public bool SelfConsumptionOnly { get; set; }
 }

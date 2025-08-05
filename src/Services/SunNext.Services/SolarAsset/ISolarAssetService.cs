@@ -21,5 +21,6 @@ namespace SunNext.Services.SolarAsset
 
         Task<bool> UnDeleteAsync(string id);
         Task<bool> HardDeleteAsync(string id);
+        Task<int> CountAsync();
     }
 }

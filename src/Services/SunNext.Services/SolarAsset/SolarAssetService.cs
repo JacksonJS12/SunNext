@@ -33,7 +33,6 @@ namespace SunNext.Services.Data
                 .AllAsNoTracking()
                 .Where(x => x.OwnerId == userId);
 
-            // Apply search filter
             if (!string.IsNullOrWhiteSpace(queryModel.SearchString))
             {
                 string wildCard = $"%{queryModel.SearchString.ToLower()}%";
@@ -41,21 +40,18 @@ namespace SunNext.Services.Data
                     .Where(x => EF.Functions.Like(x.Name, wildCard));
             }
 
-            // Apply solar asset type filter
             if (!string.IsNullOrWhiteSpace(queryModel.SolarAssetType))
             {
                 assetsQuery = assetsQuery
                     .Where(x => x.Type == queryModel.SolarAssetType);
             }
 
-            // Apply date filters
             if (queryModel.InstallationDateFrom.HasValue)
                 assetsQuery = assetsQuery.Where(x => x.CreatedOn >= queryModel.InstallationDateFrom.Value);
 
             if (queryModel.InstallationDateTo.HasValue)
                 assetsQuery = assetsQuery.Where(x => x.CreatedOn <= queryModel.InstallationDateTo.Value);
 
-            // Apply sorting
             assetsQuery = queryModel.SolarAssetSorting switch
             {
                 SolarAssetSorting.Newest => assetsQuery
@@ -74,10 +70,8 @@ namespace SunNext.Services.Data
                     .OrderByDescending(x => x.CreatedOn)
             };
 
-            // Get total count before pagination
             int totalAssets = await assetsQuery.CountAsync();
 
-            // Apply pagination
             var assets = await assetsQuery
                 .Skip((queryModel.CurrentPage - 1) * queryModel.SolarAssetsPerPage)
                 .Take(queryModel.SolarAssetsPerPage)
@@ -97,7 +91,6 @@ namespace SunNext.Services.Data
             IQueryable<SunNext.Data.Models.SolarAsset> assetsQuery = this._assetRepository
                 .AllAsNoTrackingWithDeleted();
 
-            // Apply search filter
             if (!string.IsNullOrWhiteSpace(queryModel.SearchString))
             {
                 string wildCard = $"%{queryModel.SearchString.ToLower()}%";
@@ -137,7 +130,6 @@ namespace SunNext.Services.Data
 
             int totalAssets = await assetsQuery.CountAsync();
 
-            // Apply pagination
             var assets = await assetsQuery
                 .Skip((queryModel.CurrentPage - 1) * queryModel.SolarAssetsPerPage)
                 .Take(queryModel.SolarAssetsPerPage)
@@ -224,5 +216,8 @@ namespace SunNext.Services.Data
             await this._assetRepository.SaveChangesAsync();
             return true;
         }
+
+        public async Task<int> CountAsync()
+            => await this._assetRepository.AllWithDeleted().CountAsync();
     }
 }

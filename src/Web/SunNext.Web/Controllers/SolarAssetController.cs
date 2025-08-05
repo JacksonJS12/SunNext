@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SunNext.Common;
 using AutoMapper;
 using SunNext.Services.Data.Prototypes.SolarAsset;
+using SunNext.Services.Simulation;
 using SunNext.Services.SolarAsset;
 using SunNext.Web.ViewModels.SolarAssets;
 
@@ -15,11 +16,17 @@ namespace SunNext.Web.Controllers
     public class SolarAssetController : BaseController
     {
         private readonly ISolarAssetService _solarAssetService;
+        private readonly ISolarSimulatorService _solarSimulatorService;
         private readonly IMapper _mapper;
+        private const double avgSunHours = 6.2;
 
-        public SolarAssetController(ISolarAssetService solarAssetService, IMapper mapper)
+        public SolarAssetController(
+            ISolarAssetService solarAssetService,
+            ISolarSimulatorService solarSimulatorService,
+            IMapper mapper)
         {
             this._solarAssetService = solarAssetService;
+            this._solarSimulatorService = solarSimulatorService;
             this._mapper = mapper;
         }
 
@@ -29,13 +36,13 @@ namespace SunNext.Web.Controllers
             string userId = GetUserId();
 
             var prototypeQueryModel = _mapper.Map<AllSolarAssetsQueryPrototype>(queryModel);
-            
+
             AllSolarAssetsFilteredAndPagedPrototype prototype =
                 await this._solarAssetService.AllAsync(prototypeQueryModel, userId);
 
             queryModel.SolarAssets = this._mapper.Map<IEnumerable<SolarAssetListItemViewModel>>(prototype.SolarAssets);
             queryModel.TotalSolarAssets = prototype.TotalSolarAssetsCount;
-            
+
 
             return View(queryModel);
         }
@@ -51,7 +58,7 @@ namespace SunNext.Web.Controllers
 
             queryModel.SolarAssets = this._mapper.Map<IEnumerable<SolarAssetListItemViewModel>>(prototype.SolarAssets);
             queryModel.TotalSolarAssets = prototype.TotalSolarAssetsCount;
-            
+
 
             return View(queryModel);
         }
@@ -87,11 +94,18 @@ namespace SunNext.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
+            if (model.DailyEnergyNeedKWh <= 0)
+            {
+                model.DailyEnergyNeedKWh = Math.Round(
+                    model.CapacityKw * avgSunHours * (model.EfficiencyPercent / 100.0), 2);
+            }
+
             var prototype = this._mapper.Map<SolarAssetPrototype>(model);
             await this._solarAssetService.CreateAsync(prototype);
 
             return RedirectToAction(nameof(All));
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
@@ -120,7 +134,7 @@ namespace SunNext.Web.Controllers
             if (!success)
                 return NotFound();
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new {id});
         }
 
         [HttpPost]
@@ -145,7 +159,7 @@ namespace SunNext.Web.Controllers
 
             return RedirectToAction(nameof(AdminAll));
         }
-        
+
         [HttpPost]
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         public async Task<IActionResult> HardDelete(string id)
@@ -155,6 +169,17 @@ namespace SunNext.Web.Controllers
                 return NotFound();
 
             return RedirectToAction(nameof(AdminAll));
+        }
+        
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> SimulateAll()
+        {
+            DateTime date = DateTime.UtcNow.Date;
+            await this._solarSimulatorService.GenerateForAllAssetsAsync(date);
+            TempData["Success"] = "Simulation data generated for all solar assets.";
+            
+            return RedirectToAction("AdminOverview", "User");
         }
     }
 }

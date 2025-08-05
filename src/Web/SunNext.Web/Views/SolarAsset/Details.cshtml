@@ -3,267 +3,249 @@
 @{
     ViewData["Title"] = "Asset Details";
 }
-<style>
-    .metric-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        margin-bottom: 40px;
-    }
 
-    .metric-card {
-        background: rgba(30, 41, 59, 0.8);
-        border: 1px solid rgba(51, 65, 85, 0.6);
-        border-radius: 12px;
-        padding: 24px;
-        text-align: center;
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
 
-    .metric-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #3b82f6, #06b6d4, #10b981);
-        border-radius: 12px 12px 0 0;
-    }
 
-    .metric-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        border-color: rgba(59, 130, 246, 0.5);
-    }
-
-    .metric-value {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #ffffff;
-        margin-bottom: 8px;
-        background: linear-gradient(135deg, #3b82f6, #06b6d4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .metric-label {
-        font-size: 0.95rem;
-        color: #cbd5e1;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-    }
-
-</style>
 <div class="container py-4">
-    <div class="page-header">
-        <h1 class="asset-title">☀️ @Model.Name</h1>
+    <!-- Header Section -->
+    <div class="asset-header fade-in">
+        <h1 class="asset-title">
+            <i class="bi bi-sun"></i>
+            @Model.Name
+        </h1>
         <div class="status-indicator">
             <div class="status-dot @(Model.IsOnline ? "bg-success" : "bg-secondary")"></div>
-            <span class=" @(Model.IsOnline ? "text-success" : "text-secondary")">@(Model.IsOnline ? "Active & Generating" : "Offline")</span>
+            <span class="@(Model.IsOnline ? "text-success" : "text-secondary")">
+                @(Model.IsOnline ? "Active & Generating" : "Offline")
+            </span>
         </div>
     </div>
-    <div class="d-flex justify-content-end mb-4 fade-in">
-        <div class="btn-group" role="group">
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning me-2">
-                <i class="bi bi-pencil-square"></i> Edit
-            </a>
-            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger"
-               onclick="return confirm('Are you sure you want to delete this solar asset?')">
-                <i class="bi bi-trash"></i> Delete
-            </a>
-        </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons fade-in">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning">
+            <i class="bi bi-pencil-square"></i> Edit Asset
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger"
+           onclick="return confirm('Are you sure you want to delete this solar asset?')">
+            <i class="bi bi-trash"></i> Delete Asset
+        </a>
     </div>
+
+    <!-- Metrics Grid -->
     <div class="metric-grid fade-in">
         <div class="metric-card">
             <div class="metric-value">@Model.PowerKw</div>
             <div class="metric-label">
+                <i class="bi bi-lightning-charge"></i>
                 kW Power
-                <i class="bi bi-info-circle ms-1 tooltip-icon" data-bs-toggle="tooltip" title="Maximum instantaneous output of the solar asset in kilowatts (kW)."></i>
+                <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                   title="Maximum instantaneous output of the solar asset in kilowatts (kW)."></i>
             </div>
         </div>
         <div class="metric-card">
             <div class="metric-value">@Model.EfficiencyPercent%</div>
             <div class="metric-label">
-                % Efficiency
-                <i class="bi bi-info-circle ms-1 tooltip-icon" data-bs-toggle="tooltip" title="Efficiency represents how much of the sunlight is converted into usable energy."></i>
+                <i class="bi bi-speedometer2"></i>
+                Efficiency
+                <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                   title="Efficiency represents how much of the sunlight is converted into usable energy."></i>
             </div>
         </div>
         <div class="metric-card">
             <div class="metric-value">@Model.CapacityKw</div>
             <div class="metric-label">
+                <i class="bi bi-battery-full"></i>
                 kWp Capacity
-                <i class="bi bi-info-circle ms-1 tooltip-icon" data-bs-toggle="tooltip" title="Total installed peak capacity measured under standard conditions."></i>
+                <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                   title="Total installed peak capacity measured under standard conditions."></i>
             </div>
         </div>
         <div class="metric-card">
             <div class="metric-value">@Model.EnergyTodayKWh</div>
             <div class="metric-label">
+                <i class="bi bi-calendar-day"></i>
                 kWh Today
-                <i class="bi bi-info-circle ms-1 tooltip-icon" data-bs-toggle="tooltip" title="Total energy produced by the system today in kilowatt-hours."></i>
+                <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                   title="Total energy produced by the system today in kilowatt-hours."></i>
             </div>
         </div>
     </div>
 
-    <div class="row g-4">
-        <div class="col-lg-8">
-            
-
-            <div class="dark-card p-4 mb-4 fade-in">
+    <!-- Main Content Layout -->
+    <div class="content-layout">
+        <!-- Left Column - Details -->
+        <div class="details-column">
+            <!-- Energy Production Section -->
+            <div class="info-section fade-in">
                 <h5 class="section-title">Energy Production</h5>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <span class="info-label">Today</span>
-                            <span class="info-value">@Model.EnergyTodayKWh kWh <i class="bi bi-info-circle tooltip-icon" title="Energy generated today" data-bs-toggle="tooltip"></i></span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">This Month</span>
-                            <span class="info-value">@Model.EnergyMonthKWh kWh <i class="bi bi-info-circle tooltip-icon" title="Energy generated this month" data-bs-toggle="tooltip"></i></span>
-                        </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Today's Generation</span>
+                        <span class="info-value">
+                            @Model.EnergyTodayKWh kWh
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Energy generated today"></i>
+                        </span>
                     </div>
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <span class="info-label">This Year</span>
-                            <span class="info-value">@Model.EnergyYearKWh kWh <i class="bi bi-info-circle tooltip-icon" title="Energy generated this year" data-bs-toggle="tooltip"></i></span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Total Lifetime</span>
-                            <span class="info-value">@Model.EnergyTotalKWh kWh <i class="bi bi-info-circle tooltip-icon" title="Total energy produced" data-bs-toggle="tooltip"></i></span>
-                        </div>
+                    <div class="info-item">
+                        <span class="info-label">This Month</span>
+                        <span class="info-value">
+                            @Model.EnergyMonthKWh kWh
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Energy generated this month"></i>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">This Year</span>
+                        <span class="info-value">
+                            @Model.EnergyYearKWh kWh
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Energy generated this year"></i>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total Lifetime</span>
+                        <span class="info-value">
+                            @Model.EnergyTotalKWh kWh
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Total energy produced since commissioning"></i>
+                        </span>
                     </div>
                 </div>
             </div>
 
-            <div class="dark-card p-4 mb-4 fade-in">
+            <!-- Technical Specifications -->
+            <div class="info-section fade-in">
                 <h5 class="section-title">Technical Specifications</h5>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <span class="info-label">Max Power</span>
-                            <span class="info-value">@Model.PowerKw kW <i class="bi bi-info-circle tooltip-icon" title="Maximum power output" data-bs-toggle="tooltip"></i></span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Efficiency</span>
-                            <span class="info-value">@Model.EfficiencyPercent% <i class="bi bi-info-circle tooltip-icon" title="System efficiency" data-bs-toggle="tooltip"></i></span>
-                        </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Maximum Power Output</span>
+                        <span class="info-value">
+                            @Model.PowerKw kW
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Maximum power output under optimal conditions"></i>
+                        </span>
                     </div>
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <span class="info-label">Capacity</span>
-                            <span class="info-value">@Model.CapacityKw kWp <i class="bi bi-info-circle tooltip-icon" title="Installed capacity" data-bs-toggle="tooltip"></i></span>
-                        </div>
-
-                        <div class="info-row">
-                            <span class="info-label">Panel Type</span>
-                            <span class="info-value">@Model.Type <i class="bi bi-info-circle tooltip-icon" title="Solar panel type" data-bs-toggle="tooltip"></i></span>
-                        </div>
+                    <div class="info-item">
+                        <span class="info-label">System Efficiency</span>
+                        <span class="info-value">
+                            @Model.EfficiencyPercent%
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Overall system efficiency rating"></i>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Installed Capacity</span>
+                        <span class="info-value">
+                            @Model.CapacityKw kWp
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Total installed peak capacity"></i>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Panel Technology</span>
+                        <span class="info-value">
+                            @Model.Type
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Type of solar panel technology used"></i>
+                        </span>
                     </div>
                 </div>
             </div>
 
-            <div class="dark-card p-4 mb-4 fade-in">
+            <!-- Installation Details -->
+            <div class="info-section fade-in">
                 <h5 class="section-title">Installation Details</h5>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <span class="info-label">Installer</span>
-                            <span class="info-value">@Model.InstallerName <i class="bi bi-info-circle tooltip-icon" title="Installation company" data-bs-toggle="tooltip"></i></span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Email</span>
-                            <span class="info-value">@Model.InstallerEmail <i class="bi bi-info-circle tooltip-icon" title="Contact email" data-bs-toggle="tooltip"></i></span>
-                        </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Installation Company</span>
+                        <span class="info-value">
+                            @Model.InstallerName
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Company that installed the system"></i>
+                        </span>
                     </div>
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <span class="info-label">Phone</span>
-                            <span class="info-value">@Model.InstallerPhone <i class="bi bi-info-circle tooltip-icon" title="Contact phone" data-bs-toggle="tooltip"></i></span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Commissioned</span>
-                            <span class="info-value">@Model.CommissioningDate.ToString("dd MMM yyyy") <i class="bi bi-info-circle tooltip-icon" title="Commissioning date" data-bs-toggle="tooltip"></i></span>
-                        </div>
+                    <div class="info-item">
+                        <span class="info-label">Contact Email</span>
+                        <span class="info-value">
+                            @Model.InstallerEmail
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Installer contact email"></i>
+                        </span>
                     </div>
-                </div>
-            </div>
-
-            <div class="dark-card p-4 fade-in">
-                <h5 class="section-title">Location Details</h5>
-                <div class="info-row">
-                    <span class="info-label">Address</span>
-                    <span class="info-value">@Model.Address <i class="bi bi-info-circle tooltip-icon" title="Installation address" data-bs-toggle="tooltip"></i></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Time Zone</span>
-                    <span class="info-value">@Model.TimeZone <i class="bi bi-info-circle tooltip-icon" title="Local time zone" data-bs-toggle="tooltip"></i></span>
+                    <div class="info-item">
+                        <span class="info-label">Contact Phone</span>
+                        <span class="info-value">
+                            @Model.InstallerPhone
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Installer contact phone number"></i>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Commissioning Date</span>
+                        <span class="info-value">
+                            @Model.CommissioningDate.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("en-US"))
+                            <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                               title="Date when the system was commissioned and activated"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <div class="dark-card p-4 mb-4 fade-in">
+        <!-- Right Column - Sidebar -->
+        <div class="sidebar-column">
+            <!-- Asset Image -->
+            <div class="sidebar-section fade-in">
                 <div class="asset-image">
-                    <img src="@Model.ImageUrl" class="img-fluid" alt="@Model.Name" />
+                    <img src="@Model.ImageUrl" class="img-fluid" alt="@Model.Name"/>
                 </div>
-                <p class="text-center text-muted mb-0">Virtual Power Station</p>
+                <p class="text-center" style="color: #888; margin: 0;">Virtual Power Station</p>
             </div>
 
-            <div class="dark-card p-4 fade-in">
-                <h5 class="section-title">Installation Map</h5>
+            <!-- Location & Map -->
+            <div class="sidebar-section fade-in">
+                <h5 class="section-title">Installation Location</h5>
                 <div class="map-container">
                     <div id="map"></div>
+                    <div class="map-overlay"></div>
+                </div>
+                <div class="location-info">
+                    <div class="location-item">
+                        <i class="bi bi-geo-alt-fill location-icon"></i>
+                        <div>
+                            <span class="location-label">Address</span>
+                            <div class="location-text">@Model.Address</div>
+                        </div>
+                        <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                           title="Installation address"></i>
+                    </div>
+                    <div class="location-item">
+                        <i class="bi bi-clock location-icon"></i>
+                        <div>
+                            <span class="location-label">Time Zone</span>
+                            <div class="location-text">@Model.TimeZone</div>
+                        </div>
+                        <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip"
+                           title="Local time zone for this installation"></i>
+                    </div>
                 </div>
             </div>
-            
         </div>
     </div>
 </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        // Initialize tooltips
         initTooltips();
 
-        const address = "@Model.Address";
-        const encodedAddress = encodeURIComponent(address);
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodedAddress}`;
+        // Initialize map
+        mapboxgl.accessToken = 'pk.eyJ1IjoiamFja3NvbmpzMTIiLCJhIjoiY21keHR0bDNrMDFzbzJrcDhubWc3Z3U1OSJ9.yKm2mo_L6o8uAteyHxVt3A';
+        initializeMap();
 
-        fetch(url, {
-            headers: {
-                'Accept': 'application/json',
-                'User-Agent': 'SunNextPlatform/1.0'
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.length > 0) {
-                    const lat = data[0].lat;
-                    const lon = data[0].lon;
-                    const map = L.map('map').setView([lat, lon], 15);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; OpenStreetMap contributors'
-                    }).addTo(map);
-
-                    L.marker([lat, lon]).addTo(map)
-                        .bindPopup('<strong>@Model.Name</strong><br>' + address)
-                        .openPopup();
-
-                    setTimeout(initTooltips, 300);
-                } else {
-                    document.getElementById('map').innerHTML = '<div class="text-center text-danger p-4">Could not find location</div>';
-                }
-            })
-            .catch(() => {
-                document.getElementById('map').innerHTML = '<div class="text-center text-danger p-4">Failed to load map</div>';
-            });
-
+        // Intersection Observer for fade-in animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -271,16 +253,73 @@
                     entry.target.style.transform = 'translateY(0)';
                 }
             });
-        }, { threshold: 0.1 });
+        }, {threshold: 0.1});
 
+        // Observe fade-in elements
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     });
 
+    function initializeMap() {
+        const address = "@Model.Address";
+        const encoded = encodeURIComponent(address);
+
+        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encoded}.json?access_token=${mapboxgl.accessToken}&limit=1`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.features || data.features.length === 0) {
+                    showMapFallback("Location not found on map");
+                    return;
+                }
+
+                const [lon, lat] = data.features[0].center;
+
+                const map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/dark-v11',
+                    center: [lon, lat],
+                    zoom: 15
+                });
+
+                map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+                new mapboxgl.Marker({color: '#0dcaf0'})
+                    .setLngLat([lon, lat])
+                    .setPopup(new mapboxgl.Popup({offset: 12}).setHTML(
+                        `<strong style="color:#0dcaf0;">@Model.Name</strong><br><small>${address}</small>`
+                    ))
+                    .addTo(map)
+                    .togglePopup();
+
+                // Re-initialize tooltips after map renders
+                map.once('load', () => setTimeout(initTooltips, 300));
+            })
+            .catch(error => {
+                console.error(error);
+                showMapFallback("Failed to load map");
+            });
+    }
+
+    function showMapFallback(msg) {
+        document.getElementById('map').innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:center;height:100%;background:rgba(0,0,0,.3);color:#888;font-size:.9rem;">
+            <div style="text-align:center;">
+                <i class="bi bi-geo-alt" style="font-size:2rem;color:#666;margin-bottom:.5rem;"></i><br>${msg}
+            </div>
+        </div>`;
+    }
+
+
     function initTooltips() {
+        // Dispose existing tooltips
         document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-            if (bootstrap.Tooltip.getInstance(el)) {
-                bootstrap.Tooltip.getInstance(el).dispose();
+            const existingTooltip = bootstrap.Tooltip.getInstance(el);
+            if (existingTooltip) {
+                existingTooltip.dispose();
             }
+        });
+
+        // Initialize new tooltips
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
             new bootstrap.Tooltip(el, {
                 container: 'body',
                 placement: 'top',
