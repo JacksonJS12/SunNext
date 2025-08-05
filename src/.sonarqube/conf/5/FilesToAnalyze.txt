@@ -1,0 +1,10 @@
+﻿C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Models\ApplicationRole.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Models\ApplicationUser.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Models\Battery.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Models\BlogPost.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Models\MarketTrade.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Models\SolarAsset.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Models\SolarSimulationData.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Models\TradePosition.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Models\VirtualWallet.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Data\SunNext.Data.Models\WalletTransaction.cs

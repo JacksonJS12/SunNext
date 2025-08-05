@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\SunNext.Data\SunNext.Data.csproj" />
     <ProjectReference Include="..\..\Services\SunNext.Services.Data\SunNext.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\SunNext.Services\SunNext.Services.csproj" />
   </ItemGroup>
 
 </Project>

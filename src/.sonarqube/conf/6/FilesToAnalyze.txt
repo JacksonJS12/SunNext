@@ -1,0 +1,11 @@
+﻿C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Data\Prototypes\BlogPost\BlogPostFormPrototype.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Data\Prototypes\BlogPost\BlogPostPrototype.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Data\Prototypes\Market\MarketPricePrototype.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Data\Prototypes\Market\MarketPriceRawPrototype.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Data\Prototypes\Market\TradePositionPrototype.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Data\Prototypes\Simulation\SolarSimulationDataPrototype.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Data\Prototypes\SolarAsset\AllSolarAssetsFilteredAndPagedPrototype.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Data\Prototypes\SolarAsset\AllSolarAssetsQueryPrototype.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Data\Prototypes\SolarAsset\SolarAssetListItemPrototype.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Data\Prototypes\SolarAsset\SolarAssetPrototype.cs
+C:\Users\D.Ivanov\repos\JacksonJS12\SunNext\src\Services\SunNext.Services.Data\Prototypes\VirtualWallet\VirtualWalletPrototype.cs
