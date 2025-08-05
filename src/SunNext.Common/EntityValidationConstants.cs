@@ -20,5 +20,37 @@ namespace SunNext.Common
 
             public const double EnergyMin = 0;
         }
+        public static class MarketTrade
+        {
+            public const int StrategyTagMaxLength = 100;
+
+            public const int HourMin = 0;
+            public const int HourMax = 23;
+
+            public const decimal AmountMin = 0;
+            public const decimal PriceMin = 0;
+            public const decimal ProfitMin = 0;
+        }
+        public static class DailyPVTradingPosition
+        {
+            public const decimal EnergyUsedMin = 0;
+            public const decimal AvgPriceMin = 0;
+            public const decimal ProfitMin = 0;
+        }
+
+        public static class Battery
+        {
+            public const int TypeMaxLength = 50;
+
+            public const double MinCapacityKWh = 0.1;
+            public const double MaxCapacityKWh = 10000;
+            
+            public const int MinLocationLength = 5;
+            public const int MaxLocationLength = 20;
+
+            public const int MinModelLength = 2;
+            public const int MaxModelLength = 50;
+        }
+
     }
 }

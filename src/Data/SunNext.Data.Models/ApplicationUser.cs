@@ -28,6 +28,8 @@ namespace SunNext.Data.Models
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+        public string WalletId { get; set; }
+        public virtual VirtualWallet Wallet { get; set; } = null!;
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
         public virtual ICollection<SolarAsset> SolarAssets { get; set; }

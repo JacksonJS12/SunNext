@@ -12,7 +12,7 @@ using SunNext.Web.ViewModels.Blog;
 
 namespace SunNext.Web.Controllers
 {
-    public class BlogController : Controller
+    public class BlogController : BaseController
     {
         private readonly IBlogPostService _blogPostService;
         private readonly IMapper _mapper;

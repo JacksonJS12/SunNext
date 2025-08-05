@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SunNext.Web.Controllers;
 
-public class MonitoringController : Controller
+public class MonitoringController : BaseController
 {
     public IActionResult Index()
     {

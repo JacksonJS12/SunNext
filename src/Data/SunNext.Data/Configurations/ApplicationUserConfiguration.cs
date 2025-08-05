@@ -28,6 +28,12 @@
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+            
+            appUser
+                .HasOne(u => u.Wallet)
+                .WithOne(w => w.Owner)
+                .HasForeignKey<VirtualWallet>(w => w.OwnerId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

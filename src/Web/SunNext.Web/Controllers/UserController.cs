@@ -1,23 +1,48 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata;
 using SunNext.Common;
+using SunNext.Services.Market;
+using SunNext.Services.SolarAsset;
+using SunNext.Services.User;
+using SunNext.Web.ViewModels.User;
 
 namespace SunNext.Web.Controllers;
 
 public class UserController : BaseController
 {
+    private readonly ISolarAssetService _solarAssetService;
+    private readonly IMarketService _marketService;
+    private readonly IUserService _userService;
+    
+
+    public UserController( ISolarAssetService _solarAssetService, IMarketService _marketService, IUserService _userService )
+    {
+        this._solarAssetService = _solarAssetService;
+        this._marketService = _marketService;
+        this._userService = _userService;
+    }
     public IActionResult Index()
     {
         return View();
     }
 
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-    public IActionResult AdminOverview()
+    public async Task<IActionResult> AdminCockpit()
     {
-        return View("Admin/Overview");
+        var model = new AdminDashboardViewModel
+        {
+            TotalUsers = await this._userService.CountAsync(),
+            TotalAssets = await this._solarAssetService.CountAsync(),
+            TradeRecords = await this._marketService.CountAsync(),
+        };
+
+        return View("Admin/Cockpit", model);
     }
 
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public IActionResult AdminUsers()
     {
         return View("Admin/Users");

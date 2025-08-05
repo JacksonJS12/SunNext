@@ -49,6 +49,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Settings\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Battery\Create.cshtml" />
   </ItemGroup>
 </Project>
 

@@ -5,10 +5,8 @@
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-
     using SunNext.Data.Common.Models;
     using SunNext.Data.Models;
-
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +24,12 @@
 
         public DbSet<BlogPost> BlogPosts { get; set; }
         public DbSet<SolarAsset> SolarAssets { get; set; }
+        public DbSet<SolarSimulationData> SolarSimulationData { get; set; }
+        public DbSet<MarketTrade> MarketTrades { get; set; }
+        public DbSet<TradePosition> TradePositions { get; set; }
+        public DbSet<Battery> Batteries { get; set; }
+        public DbSet<VirtualWallet> VirtualEnergyWallets { get; set; }
+        public DbSet<WalletTransaction> WalletTransactions { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
@@ -49,7 +53,12 @@
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
+            builder.Entity<ApplicationUser>()
+                .HasOne(u => u.Wallet)
+                .WithOne(w => w.Owner)
+                .HasForeignKey<VirtualWallet>(w => w.OwnerId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
             this.ConfigureUserIdentityRelations(builder);
 
             EntityIndexesConfiguration.Configure(builder);
@@ -79,7 +88,7 @@
         }
 
         private void ConfigureUserIdentityRelations(ModelBuilder builder)
-             => builder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
+            => builder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
 
         private void ApplyAuditInfoRules()
         {

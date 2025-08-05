@@ -1,11 +1,11 @@
-﻿namespace SunNext.Data.Repositories
+﻿using System.Collections.Generic;
+
+namespace SunNext.Data.Repositories
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-
     using SunNext.Data.Common.Repositories;
-
     using Microsoft.EntityFrameworkCore;
 
     public class EfRepository<TEntity> : IRepository<TEntity>
@@ -39,6 +39,10 @@
         }
 
         public virtual void Delete(TEntity entity) => this.DbSet.Remove(entity);
+
+        public virtual Task AddRangeAsync(IEnumerable<TEntity> entities)
+            => this.DbSet.AddRangeAsync(entities);
+
 
         public Task<int> SaveChangesAsync() => this.Context.SaveChangesAsync();
 
