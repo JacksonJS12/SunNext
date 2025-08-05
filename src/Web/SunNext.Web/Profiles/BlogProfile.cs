@@ -8,9 +8,9 @@ using SunNext.Web.ViewModels.Blog;
 
 namespace SunNext.Web;
 
-public class BlogProfile : Profile
+public class BlogBatteryProfile : BatteryProfile
 {
-    public BlogProfile()
+    public BlogBatteryProfile()
     {
         CreateMap<BlogPostFormModel, BlogPost>();
         CreateMap<BlogPost, BlogPostViewModel>();

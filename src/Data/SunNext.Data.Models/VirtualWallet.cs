@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using SunNext.Data.Common.Models;
+
+namespace SunNext.Data.Models;
+
+public class VirtualEnergyWallet : BaseDeletableModel<string>
+{
+    public VirtualEnergyWallet()
+    {
+        this.Id = Guid.NewGuid().ToString();
+    }
+
+
+    public double EnergyBalanceKWh { get; private set; }
+
+    public List<Battery> LinkedBatteries { get; set; } = new();
+    public string OwnerId { get; set; }
+    public ApplicationUser Owner { get; set; }
+
+    public List<WalletTransaction> Transactions { get; set; } = new();
+
+    public void AddEnergy(double amount, string source = "Production")
+    {
+        if (amount <= 0) return;
+
+        EnergyBalanceKWh += amount;
+        Transactions.Add(new WalletTransaction
+        {
+            Timestamp = DateTime.UtcNow,
+            AmountKWh = amount,
+            Type = "Deposit",
+            Source = source
+        });
+    }
+
+    public bool SellEnergy(double amount, string destination = "Market")
+    {
+        if (amount <= 0 || amount > EnergyBalanceKWh) return false;
+
+        EnergyBalanceKWh -= amount;
+        Transactions.Add(new WalletTransaction
+        {
+            Timestamp = DateTime.UtcNow,
+            AmountKWh = -amount,
+            Type = "Withdrawal",
+            Source = destination
+        });
+
+        return true;
+    }
+
+    public double GetBalance() => EnergyBalanceKWh;
+}
