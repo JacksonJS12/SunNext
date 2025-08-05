@@ -1,4 +1,6 @@
-﻿namespace SunNext.Data.Common.Repositories
+﻿using System.Collections.Generic;
+
+namespace SunNext.Data.Common.Repositories
 {
     using System;
     using System.Linq;
@@ -16,6 +18,7 @@
         void Update(TEntity entity);
 
         void Delete(TEntity entity);
+        Task AddRangeAsync(IEnumerable<TEntity> entities);
 
         Task<int> SaveChangesAsync();
     }

@@ -19,14 +19,19 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
+	  <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.8.0" />
+	  <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.8.0" />
+	  <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
+	  <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.8.0" />
+	  <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.507">
