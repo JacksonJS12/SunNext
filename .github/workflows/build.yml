@@ -47,13 +47,38 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       
+      - name: List directory contents
+        shell: powershell
+        run: |
+          Write-Host "Current directory contents:"
+          Get-ChildItem -Force
+          Write-Host "Looking for .sln files:"
+          Get-ChildItem -Filter "*.sln" -Recurse
+          Write-Host "Looking for .csproj files:"
+          Get-ChildItem -Filter "*.csproj" -Recurse
+      
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"JacksonJS12_SunNext" /o:"jacksonjs12" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths="**/TestResults/*/*.xml"
-          dotnet restore
-          dotnet build --configuration Release --no-restore
-          dotnet test --configuration Release --no-build --collect:"Code Coverage;Format=xml" --results-directory ./TestResults/
+          # Find solution or project file
+          $solutionFile = Get-ChildItem -Filter "*.sln" | Select-Object -First 1
+          $projectFile = Get-ChildItem -Filter "*.csproj" -Recurse | Select-Object -First 1
+          
+          if ($solutionFile) {
+            $buildTarget = $solutionFile.Name
+            Write-Host "Found solution file: $buildTarget"
+          } elseif ($projectFile) {
+            $buildTarget = $projectFile.FullName
+            Write-Host "Found project file: $buildTarget"
+          } else {
+            Write-Host "No solution or project file found"
+            exit 1
+          }
+          
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"JacksonJS12_SunNext" /o:"jacksonjs12" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet restore $buildTarget
+          dotnet build $buildTarget --configuration Release --no-restore
+          dotnet test $buildTarget --configuration Release --no-build --collect:"Code Coverage;Format=xml" --results-directory ./TestResults/ --logger trx --verbosity normal
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
