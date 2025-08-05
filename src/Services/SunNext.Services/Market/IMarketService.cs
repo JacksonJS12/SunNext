@@ -9,5 +9,8 @@ namespace SunNext.Services.Market;
 
 public interface IMarketService
 {
-    public Task<List<MarketPricePrototype>> GetPricesByDateWithFallbackAsync(DateTime requestedDate);
+    Task<List<MarketPricePrototype>> GetPricesByDateWithFallbackAsync(DateTime requestedDate);
+    Task<int> CountAsync();
+    Task GenerateAndSaveDailyTradesAsync(DateTime date, string userId);
+    Task AddTradePositionAsync(TradePositionPrototype dto, string userId);
 }

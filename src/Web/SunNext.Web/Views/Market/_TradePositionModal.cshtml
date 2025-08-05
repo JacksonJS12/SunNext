@@ -1,6 +1,57 @@
-namespace SunNext.Web.Views.Market;
+@model SunNext.Web.ViewModels.Market.TradePositionInputModel
 
-public class _TradePositionModal
-{
-    
-}
+<div class="modal fade" id="tradePositionModal" tabindex="-1" aria-labelledby="tradePositionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tradePositionModalLabel">📊 Add Trade Position</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form method="post" asp-controller="Market" asp-action="AddTradePosition">
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Solar Asset</label>
+                            <select name="SolarAssetId" class="form-select" required>
+                                <option disabled selected value="">-- Select Asset --</option>
+                                @foreach (var asset in Model.Assets)
+                                {
+                                    <option value="@asset.Id">@asset.Name</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Start Hour</label>
+                            <input type="number" name="StartHour" class="form-control" min="1" max="24" required />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">End Hour</label>
+                            <input type="number" name="EndHour" class="form-control" min="1" max="24" required />
+                        </div>
+
+        @*                 <input type="hidden" name="TotalEnergyMWh" value="0" /> *@
+        @*                 <input type="hidden" name="AverageSellPriceBGN" value="0" /> *@
+        @*                 <input type="hidden" name="TotalProfitBGN" value="0" /> *@
+        @*                 <input type="hidden" name="StrategyTag" value="Auto" /> *@
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success d-none" id="saveTradeBtn">
+                        💾 Save Position
+                    </button>
+                    <button type="button" class="btn btn-primary" id="continueTradeBtn">
+                        ➡️ Continue to End Hour
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+

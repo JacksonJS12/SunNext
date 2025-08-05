@@ -61,75 +61,39 @@
 
 
     <div class="dark-card mb-5 p-3 p-md-4 fade-in">
-        <h4 class="section-title">📈 IBEX Spot Market Prices (BGN/MWh)</h4>
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+            <h4 class="section-title mb-0">
+                📈 IBEX Spot Market Prices (BGN/MWh)
+                <i class="bi bi-info-circle tooltip-icon ms-1" data-bs-toggle="tooltip"
+                   title="IBEX (Independent Bulgarian Energy Exchange) is the national electricity trading platform in Bulgaria, operating the day-ahead and intraday markets."></i>
+            </h4>
+
+            <h4 class="section-title mb-0">
+                CET time zone
+                <i class="bi bi-info-circle tooltip-icon ms-1" data-bs-toggle="tooltip"
+                   title="All times follow CET (Central European Time), the standard used in the European electricity markets including IBEX."></i>
+            </h4>
+
+            <h4 class="section-title mb-0 text-center w-100 w-md-auto">
+                Segment Day Ahead
+                <i class="bi bi-info-circle tooltip-icon ms-1" data-bs-toggle="tooltip"
+                   title="The Day-Ahead segment is a market where electricity prices for each hour of the next day are formed based on the intersection of aggregated supply and demand curves."></i>
+            </h4>
+        </div>
+
         <div class="chart-container">
             <canvas id="ibexPriceChart"></canvas>
         </div>
-        <div class="chart-hint">💡 Click a point to assign it to your price targets</div>
+        <div class="chart-hint">💡 Click a point to assign it to your price targets or open the Trade Position modal.</div>
     </div>
 
-    <div class="dark-card fade-in">
-        <form method="post">
-            <div class="table-responsive">
-                <table class="table table-dark table-hover align-middle mb-0">
-                    <thead>
-                    <tr>
-                        <th>Asset <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip" title="Your solar system or trading unit"></i></th>
-                        <th>Suggested Sell <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip" title="AI-based suggestion for optimal sell price"></i></th>
-                        <th>Your Sell <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip" title="Your preferred price to sell energy"></i></th>
-                        <th>Suggested Stop <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip" title="AI-suggested minimum acceptable price"></i></th>
-                        <th>Your Stop <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip" title="Price where you'd stop selling to avoid loss"></i></th>
-                        <th>Status <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip" title="Whether AI is assisting or manual mode is on"></i></th>
-                        <th>Save <i class="bi bi-info-circle tooltip-icon" data-bs-toggle="tooltip" title="Click to store your custom target"></i></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td><strong>South PV Field</strong></td>
-                        <td>210.00 BGN</td>
-                        <td><input type="number" step="0.01" name="UserSellTargets[0]" class="form-control form-control-sm" value="210.00" /></td>
-                        <td>190.00 BGN</td>
-                        <td><input type="number" step="0.01" name="UserStopTargets[0]" class="form-control form-control-sm" value="190.00" /></td>
-                        <td><span class="badge bg-info">Using AI</span></td>
-                        <td><button type="submit" class="btn btn-outline-success btn-sm"><i class="bi bi-floppy"></i></button></td>
-                    </tr>
-                    <tr>
-                        <td><strong>North Solar Array</strong></td>
-                        <td>205.50 BGN</td>
-                        <td><input type="number" step="0.01" name="UserSellTargets[1]" class="form-control form-control-sm" value="205.50" /></td>
-                        <td>185.00 BGN</td>
-                        <td><input type="number" step="0.01" name="UserStopTargets[1]" class="form-control form-control-sm" value="185.00" /></td>
-                        <td><span class="badge bg-info">Using AI</span></td>
-                        <td><button type="submit" class="btn btn-outline-success btn-sm"><i class="bi bi-floppy"></i></button></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </form>
+    <div class="d-flex justify-content-end mb-4">
+        <button class="btn btn-outline-info" id="openTradePositionBtn">
+            ➕ Add Trade Position
+        </button>
     </div>
-</div>
-
-<div class="modal fade" id="priceModal" tabindex="-1" aria-labelledby="priceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="priceModalLabel">Assign Price</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <p class="mb-4">You clicked on price:</p>
-                <div class="price-highlight mb-4" id="clickedPriceText">---</div>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <button id="setTargetBtn" type="button" class="btn btn-target">
-                        🎯 Set as Target Sell
-                    </button>
-                    <button id="setStopBtn" type="button" class="btn btn-stop">
-                        🚩 Set as Stop Price
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @await Html.PartialAsync("_TradePositionModal", Model.TradePositionInput)
+    @await Html.PartialAsync("_TradeTargetsTable")
 </div>
 
 @section Scripts {
@@ -137,33 +101,67 @@
     <script>
         document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
 
-        let clickedPrice = null;
+        let chartInstance = null;
+        let modalInstance = null;
+        let isFirstClick = true;
+        let tempStartHour = null;
+
+        function showTradeModal() {
+            if (!modalInstance) {
+                modalInstance = new bootstrap.Modal(document.getElementById("tradePositionModal"));
+            }
+            modalInstance.show();
+        }
+
+        function openStartTradeFromChart(hour) {
+            document.querySelector("input[name='StartHour']").value = hour;
+            document.querySelector("input[name='EndHour']").value = '';
+
+            document.querySelector(".optional-trade-fields")?.style?.setProperty("display", "none");
+            document.getElementById("continueTradeBtn")?.classList.remove("d-none");
+            document.getElementById("saveTradeBtn")?.classList.add("d-none");
+
+            showTradeModal();
+        }
+
+        function openCompleteTradeModal(startHour, endHour) {
+            document.querySelector("input[name='StartHour']").value = Math.min(startHour, endHour);
+            document.querySelector("input[name='EndHour']").value = Math.max(startHour, endHour);
+
+            document.querySelector(".optional-trade-fields")?.style?.setProperty("display", "block");
+            document.getElementById("continueTradeBtn")?.classList.add("d-none");
+            document.getElementById("saveTradeBtn")?.classList.remove("d-none");
+
+            showTradeModal();
+        }
+
+        // Manual button logic
+        document.getElementById("openTradePositionBtn")?.addEventListener("click", () => {
+            isFirstClick = true;
+            tempStartHour = null;
+
+            document.querySelector("input[name='StartHour']").value = '';
+            document.querySelector("input[name='EndHour']").value = '';
+            document.querySelector(".optional-trade-fields")?.style?.setProperty("display", "block");
+
+            document.getElementById("continueTradeBtn")?.classList.add("d-none");
+            document.getElementById("saveTradeBtn")?.classList.remove("d-none");
+
+            showTradeModal();
+        });
+
+        // Continue button in modal
+        document.getElementById("continueTradeBtn")?.addEventListener("click", () => {
+            modalInstance.hide(); // Hide modal and wait for 2nd click
+            isFirstClick = false;
+        });
+
         const ibexCtx = document.getElementById('ibexPriceChart');
-        const targetInput = document.querySelector("input[name='UserSellTargets[0]']");
-        const stopInput = document.querySelector("input[name='UserStopTargets[0]']");
-        const priceModal = new bootstrap.Modal(document.getElementById('priceModal'));
-        const clickedPriceText = document.getElementById("clickedPriceText");
 
-        document.getElementById("setTargetBtn").addEventListener("click", () => {
-            if (clickedPrice && targetInput) {
-                targetInput.value = clickedPrice.toFixed(2);
-                targetInput.classList.add("border-success", "fw-bold");
-                priceModal.hide();
-            }
-        });
-
-        document.getElementById("setStopBtn").addEventListener("click", () => {
-            if (clickedPrice && stopInput) {
-                stopInput.value = clickedPrice.toFixed(2);
-                stopInput.classList.add("border-danger", "fw-bold");
-                priceModal.hide();
-            }
-        });
-
-        const chartLabels = @Html.Raw(Json.Serialize(Model.MarketPrices.Select(p => $"{p.Hour.ToString("00")}:00")));
+        const chartLabels = @Html.Raw(Json.Serialize(Model.MarketPrices.Select(p => $"{p.Hour:00}:00")));
         const chartData = @Html.Raw(Json.Serialize(Model.MarketPrices.Select(p => p.Price)));
 
-        new Chart(ibexCtx, {
+        chartInstance = new Chart(ibexCtx, {
             type: 'line',
             data: {
                 labels: chartLabels,
@@ -180,12 +178,19 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                onClick: (evt, elements) => {
+                onClick: function (evt, elements) {
                     if (elements.length > 0) {
                         const index = elements[0].index;
-                        clickedPrice = evt.chart.data.datasets[0].data[index];
-                        clickedPriceText.innerText = clickedPrice.toFixed(2);
-                        priceModal.show();
+                        const hour = index + 1;
+
+                        if (isFirstClick) {
+                            tempStartHour = hour;
+                            openStartTradeFromChart(hour);
+                        } else {
+                            openCompleteTradeModal(tempStartHour, hour);
+                            isFirstClick = true;
+                            tempStartHour = null;
+                        }
                     }
                 },
                 scales: {
@@ -210,3 +215,4 @@
         });
     </script>
 }
+

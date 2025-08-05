@@ -1,18 +1,24 @@
-@model TModel
+@model SunNext.Web.ViewModels.VirtualWalletView.WalletViewModel
 
-@{
-    Layout = null;
-}
+<div class="container py-4">
+    <h2 class="mb-3">⚡ My Energy Wallet</h2>
 
-<!DOCTYPE html>
+    <div class="card p-3 mb-3">
+        <h4>Balance: @Model.BalanceKWh kWh</h4>
+        <p>Today’s Generated: <strong>@Model.TodayGeneratedKWh kWh</strong></p>
+        <p class="text-muted">Last Updated: @Model.LastUpdated.ToLocalTime()</p>
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
+        @if (Model.WasChargedToday)
+        {
+            <div class="alert alert-info mt-3">
+                ✅ Wallet already charged for today.
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-success mt-3">
+                ⚡ Wallet charged with today’s generated energy.
+            </div>
+        }
+    </div>
 </div>
-</body>
-</html>
