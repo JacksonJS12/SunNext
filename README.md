@@ -55,7 +55,7 @@ SunNext **does not scrape IBEX directly**.:
   - `Hour` (1–24 CET)
   - `PricePerMWh`
 
-🔗 **Live API Docs:** [Swagger UI](https://ibex-scraper-api-e5bwewdyfacgetaf.swedencentral-01.azurewebsites.net/swagger/index.html)
+🔗 **Live API Docs:** [Swagger UI](http://ibex-scraper.somee.com/swagger/index.html)
 
 ---
 
