@@ -27,6 +27,7 @@ namespace SunNext.Services.Data
         }
         
 
+
         public async Task<AllSolarAssetsFilteredAndPagedPrototype> AllAsync(AllSolarAssetsQueryPrototype queryModel, string userId)
         {
             IQueryable<SunNext.Data.Models.SolarAsset> assetsQuery = this._assetRepository
@@ -158,6 +159,7 @@ namespace SunNext.Services.Data
             var entity = this._mapper.Map<SunNext.Data.Models.SolarAsset>(input);
             entity.Id = Guid.NewGuid().ToString();
             await this._assetRepository.AddAsync(entity);
+            
             await this._assetRepository.SaveChangesAsync();
         }
 

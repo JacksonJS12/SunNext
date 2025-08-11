@@ -23,7 +23,7 @@ public class MarketService : IMarketService
     private readonly HttpClient _httpClient;
     private readonly ILogger<MarketService> _logger;
     private readonly IMapper _mapper;
-    private const string address = "https://ibex-scraper-api-e5bwewdyfacgetaf.swedencentral-01.azurewebsites.net";
+    private const string address = "http://ibex-scraper.somee.com";
     const decimal minimumAcceptablePrice = 170; // temporary
     public MarketService(
         HttpClient httpClient,

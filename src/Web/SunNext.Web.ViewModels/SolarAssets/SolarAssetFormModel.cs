@@ -1,11 +1,16 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using SunNext.Common;
+using SunNext.Data.Common.Models;
 
 namespace SunNext.Web.ViewModels.SolarAssets;
 
-public class SolarAssetFormModel
+public class SolarAssetFormModel : BaseDeletableModel<string>
 {
+    public SolarAssetFormModel()
+    {
+        this.Id = Guid.NewGuid().ToString();
+    }
     [Required]
     [Display(Name = "Asset Name")]
     [StringLength(EntityValidationConstants.SolarAsset.NameMaxLength)]
@@ -79,9 +84,6 @@ public class SolarAssetFormModel
     [Display(Name = "Image URL")]
     [StringLength(EntityValidationConstants.SolarAsset.ImageUrlMaxLength)]
     public string? ImageUrl { get; set; }
-
-    public DateTime CreatedOn { get; set; }
-    public DateTime LastUpdated { get; set; }
 
     [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
     [Display(Name = "Avg. Daily Energy Need (kWh)")]

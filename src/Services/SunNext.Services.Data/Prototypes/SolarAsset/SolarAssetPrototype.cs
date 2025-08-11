@@ -7,6 +7,10 @@ namespace SunNext.Services.Data.Prototypes.SolarAsset;
 
 public class SolarAssetPrototype : BaseDeletableModel<string>
 {
+    public SolarAssetPrototype()
+    {
+        this.Id = Guid.NewGuid().ToString();
+    }
     [Required]
     public string Id { get; set; } = null!;
 
