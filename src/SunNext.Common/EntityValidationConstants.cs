@@ -2,7 +2,7 @@ namespace SunNext.Common
 {
     public class EntityValidationConstants
     {
-        public static class SolarAsset
+        public static class SolarSystem
         {
             public const int NameMaxLength = 100;
             public const int TypeMaxLength = 50;
@@ -24,8 +24,8 @@ namespace SunNext.Common
         {
             public const int StrategyTagMaxLength = 100;
 
-            public const int HourMin = 0;
-            public const int HourMax = 23;
+            public const int HourMin = 1;
+            public const int HourMax = 24;
 
             public const decimal AmountMin = 0;
             public const decimal PriceMin = 0;

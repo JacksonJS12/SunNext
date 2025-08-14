@@ -16,7 +16,7 @@ namespace SunNext.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
-            this.SolarAssets = new HashSet<SolarAsset>();
+            this.SolarSystems = new HashSet<SolarSystem>();
         }
 
         public string FirstName { get; set; }
@@ -32,7 +32,7 @@ namespace SunNext.Data.Models
         public virtual VirtualWallet Wallet { get; set; } = null!;
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
-        public virtual ICollection<SolarAsset> SolarAssets { get; set; }
+        public virtual ICollection<SolarSystem> SolarSystems { get; set; }
 
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
 

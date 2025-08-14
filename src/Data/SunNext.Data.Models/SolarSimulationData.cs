@@ -24,8 +24,8 @@ public class SolarSimulationData : BaseDeletableModel<string>
     public double PowerOutput { get; set; } // kW at that timestamp
 
     [Required]
-    public string SolarAssetId { get; set; }
+    public string SolarSystemId { get; set; }
 
-    [ForeignKey(nameof(SolarAssetId))]
-    public virtual SolarAsset SolarAsset { get; set; } = null!;
+    [ForeignKey(nameof(SolarSystemId))]
+    public virtual SolarSystem SolarSystem { get; set; } = null!;
 }

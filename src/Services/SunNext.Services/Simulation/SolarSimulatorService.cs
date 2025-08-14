@@ -14,63 +14,63 @@ namespace SunNext.Services.Simulation;
 public class SolarSimulationService : ISolarSimulatorService
 {
     private readonly IDeletableEntityRepository<SolarSimulationData> _simulationRepo;
-    private readonly IDeletableEntityRepository<SunNext.Data.Models.SolarAsset> _solarAssetRepo;
+    private readonly IDeletableEntityRepository<SunNext.Data.Models.SolarSystem> _solarSystemRepo;
     private readonly IMapper _mapper;
 
     public SolarSimulationService(
         IDeletableEntityRepository<SolarSimulationData> simulationRepo,
-        IDeletableEntityRepository<SunNext.Data.Models.SolarAsset> solarAssetRepo,
+        IDeletableEntityRepository<SunNext.Data.Models.SolarSystem> solarSystemRepo,
         IMapper mapper)
     {
         _simulationRepo = simulationRepo;
-        _solarAssetRepo = solarAssetRepo;
+        _solarSystemRepo = solarSystemRepo;
         _mapper = mapper;
     }
 
-    public async Task GenerateForAllAssetsAsync(DateTime? date)
+    public async Task GenerateForAllSystemsAsync(DateTime? date)
     {
         var simulationDate = date ?? GlobalConstants.TodayEESTTime;
 
-        var assets = await this._solarAssetRepo.All().ToListAsync();
+        var systems = await this._solarSystemRepo.All().ToListAsync();
 
-        foreach (var asset in assets)
+        foreach (var system in systems)
         {
             var hasData = await this._simulationRepo.All()
-                .AnyAsync(x => x.SolarAssetId == asset.Id && x.Timestamp.Date == simulationDate);
+                .AnyAsync(x => x.SolarSystemId == system.Id && x.Timestamp.Date == simulationDate);
 
             if (!hasData)
             {
-                var simulated = SimulateDaily(asset, simulationDate);
+                var simulated = SimulateDaily(system, simulationDate);
                 await _simulationRepo.AddRangeAsync(simulated);
 
                 var totalEnergyForDay = simulated.Sum(x => x.EnergyGenerated);
 
-                var lastModified = asset.ModifiedOn ?? asset.CreatedOn;
+                var lastModified = system.ModifiedOn ?? system.CreatedOn;
 
                 if (lastModified.Month != simulationDate.Month || lastModified.Year != simulationDate.Year)
                 {
-                    asset.EnergyMonthKWh = 0;
+                    system.EnergyMonthKWh = 0;
                 }
 
                 if (lastModified.Year != simulationDate.Year)
                 {
-                    asset.EnergyYearKWh = 0;
+                    system.EnergyYearKWh = 0;
                 }
 
-                asset.EnergyTodayKWh = totalEnergyForDay;
-                asset.EnergyMonthKWh += totalEnergyForDay;
-                asset.EnergyYearKWh += totalEnergyForDay;
-                asset.EnergyTotalKWh += totalEnergyForDay;
-                asset.ModifiedOn = DateTime.UtcNow;
+                system.EnergyTodayKWh = totalEnergyForDay;
+                system.EnergyMonthKWh += totalEnergyForDay;
+                system.EnergyYearKWh += totalEnergyForDay;
+                system.EnergyTotalKWh += totalEnergyForDay;
+                system.ModifiedOn = DateTime.UtcNow;
             }
         }
 
 
         await _simulationRepo.SaveChangesAsync();
-        await _solarAssetRepo.SaveChangesAsync();
+        await _solarSystemRepo.SaveChangesAsync();
     }
 
-    private List<SolarSimulationData> SimulateDaily(SunNext.Data.Models.SolarAsset asset, DateTime day)
+    private List<SolarSimulationData> SimulateDaily(SunNext.Data.Models.SolarSystem system, DateTime day)
     {
         var list = new List<SolarSimulationData>();
         var random = new Random();
@@ -79,9 +79,9 @@ public class SolarSimulationService : ISolarSimulatorService
         {
             var irradiance = random.Next(200, 950); // Simulated irradiance (W/m²)
             var temperature = random.Next(15, 35); // Simulated temperature (°C)
-            var efficiency = asset.EfficiencyPercent / 100.0;
+            var efficiency = system.EfficiencyPercent / 100.0;
 
-            var powerOutput = (asset.CapacityKw * ((double)irradiance / 1000)) * efficiency;
+            var powerOutput = (system.CapacityKw * ((double)irradiance / 1000)) * efficiency;
             var energyGenerated = powerOutput; // Assuming 1-hour period
 
             list.Add(new SolarSimulationData
@@ -93,7 +93,7 @@ public class SolarSimulationService : ISolarSimulatorService
                 Efficiency = efficiency,
                 PowerOutput = powerOutput,
                 EnergyGenerated = energyGenerated,
-                SolarAssetId = asset.Id,
+                SolarSystemId = system.Id,
                 CreatedOn = DateTime.UtcNow,
             });
         }
@@ -101,12 +101,12 @@ public class SolarSimulationService : ISolarSimulatorService
         return list;
     }
 
-    public async Task<Dictionary<string, double>> GetTotalEnergyGeneratedPerAssetAsync(DateTime date)
+    public async Task<Dictionary<string, double>> GetTotalEnergyGeneratedPerSystemAsync(DateTime date)
     {
         return await _simulationRepo
             .AllAsNoTracking()
             .Where(x => x.Timestamp.Date == date.Date)
-            .GroupBy(x => x.SolarAssetId)
+            .GroupBy(x => x.SolarSystemId)
             .ToDictionaryAsync(
                 g => g.Key,
                 g => g.Sum(x => x.EnergyGenerated));
@@ -114,13 +114,13 @@ public class SolarSimulationService : ISolarSimulatorService
 
     public async Task<double> GetTotalEnergyGeneratedByUserAsync(string userId, DateTime date)
     {
-        var assets = await _solarAssetRepo.All()
+        var systems = await _solarSystemRepo.All()
             .Where(a => a.OwnerId == userId)
             .Select(a => a.Id)
             .ToListAsync();
 
         var energy = await _simulationRepo.All()
-            .Where(s => assets.Contains(s.SolarAssetId) && s.Timestamp.Date == date.Date)
+            .Where(s => systems.Contains(s.SolarSystemId) && s.Timestamp.Date == date.Date)
             .SumAsync(s => s.EnergyGenerated);
 
         return energy;

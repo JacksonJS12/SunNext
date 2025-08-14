@@ -1,8 +1,8 @@
 using System;
 
-namespace SunNext.Web.ViewModels.SolarAssets
+namespace SunNext.Services.Data.Prototypes.SolarSystem
 {
-    public class SolarAssetListItemViewModel
+    public class SolarSystemListItemPrototype
     {
         public string Id { get; set; }
 

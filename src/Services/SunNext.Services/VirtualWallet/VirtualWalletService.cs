@@ -4,7 +4,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SunNext.Data.Common.Repositories;
 using SunNext.Data.Models;
-using SunNext.Services.Data.Prototypes.SolarAsset;
+using SunNext.Services.Data.Prototypes.SolarSystem;
 using SunNext.Services.Data.Prototypes.VirtualWallet;
 using SunNext.Services.VirtualWallet;
 

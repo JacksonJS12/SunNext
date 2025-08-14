@@ -23,8 +23,8 @@
             <div class="card-body">
                 <div class="d-flex flex-column align-items-center">
                     <i class="bi bi-sun fs-2 text-success mb-2"></i>
-                    <h6 class="">Solar Assets</h6>
-                    <h3 class="fw-bold text-success">@Model.TotalAssets</h3>
+                    <h6 class="">Solar Systems</h6>
+                    <h3 class="fw-bold text-success">@Model.TotalSystems</h3>
                 </div>
             </div>
         </div>
@@ -60,13 +60,13 @@
     <a asp-controller="User" asp-action="AdminUsers" class="btn btn-outline-primary">
         <i class="bi bi-person-gear me-1"></i> Manage Users
     </a>
-    <a asp-controller="SolarAsset" asp-action="AdminAll" class="btn btn-outline-success">
-        <i class="bi bi-solar-panel me-1"></i> View Solar Assets
+    <a asp-controller="SolarSystem" asp-action="AdminAll" class="btn btn-outline-success">
+        <i class="bi bi-solar-panel me-1"></i> View Solar Systems
     </a>
     <a asp-controller="Blog" asp-action="Index" class="btn btn-outline-warning">
         <i class="bi bi-journal-richtext me-1"></i> Manage Blog
     </a>
-    <form asp-controller="SolarAsset" asp-action="SimulateAll" class="btn btn-outline-info" onclick="return confirm('Are you sure you want to simulate data for all assets?');">
+    <form asp-controller="SolarSystem" asp-action="SimulateAll" class="btn btn-outline-info" onclick="return confirm('Are you sure you want to simulate data for all systems?');">
         <i class="bi bi-cpu me-1"></i> Simulate All Data
     </form>
     <a asp-controller="Battery" asp-action="Create" class="btn btn-outline-secondary">

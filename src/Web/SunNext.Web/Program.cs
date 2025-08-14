@@ -9,7 +9,7 @@ using SunNext.Services.BlogPost;
 using SunNext.Services.Data;
 using SunNext.Services.Market;
 using SunNext.Services.Simulation;
-using SunNext.Services.SolarAsset;
+using SunNext.Services.SolarSystem;
 using SunNext.Services.User;
 using SunNext.Services.VirtualWallet;
 using static SunNext.Common.GlobalConstants;
@@ -93,7 +93,7 @@ namespace SunNext.Web
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             services.AddScoped<IBlogPostService, BlogPostService>();
-            services.AddScoped<ISolarAssetService, SolarAssetService>();
+            services.AddScoped<ISolarSystemService, SolarSystemService>();
             services.AddHttpClient<IMarketService, MarketService>();
             services.AddScoped<IMarketService, MarketService>();
             services.AddScoped<ISolarSimulatorService, SolarSimulationService>();
@@ -104,7 +104,7 @@ namespace SunNext.Web
             services.AddAutoMapper(
                 config => { },
                 typeof(BlogProfile).Assembly,
-                typeof(SolarAssetProfile).Assembly,
+                typeof(SolarSystemProfile).Assembly,
                 typeof(MarketProfile).Assembly
             );
 
@@ -121,7 +121,7 @@ namespace SunNext.Web
                 await new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider);
 
                 var simulatorService = serviceScope.ServiceProvider.GetRequiredService<ISolarSimulatorService>();
-                await simulatorService.GenerateForAllAssetsAsync(TodayEESTTime);
+                await simulatorService.GenerateForAllSystemsAsync(TodayEESTTime);
             }
 
             if (!app.Environment.IsDevelopment())

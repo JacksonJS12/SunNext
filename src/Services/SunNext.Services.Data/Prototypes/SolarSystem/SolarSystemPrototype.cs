@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using SunNext.Common;
 using SunNext.Data.Common.Models;
 
-namespace SunNext.Services.Data.Prototypes.SolarAsset;
+namespace SunNext.Services.Data.Prototypes.SolarSystem;
 
-public class SolarAssetPrototype : BaseDeletableModel<string>
+public class SolarSystemPrototype : BaseDeletableModel<string>
 {
-    public SolarAssetPrototype()
+    public SolarSystemPrototype()
     {
         this.Id = Guid.NewGuid().ToString();
     }
@@ -15,37 +15,37 @@ public class SolarAssetPrototype : BaseDeletableModel<string>
     public string Id { get; set; } = null!;
 
     [Required]
-    [Display(Name = "Asset Name")]
-    [StringLength(EntityValidationConstants.SolarAsset.NameMaxLength)]
+    [Display(Name = "System Name")]
+    [StringLength(EntityValidationConstants.SolarSystem.NameMaxLength)]
     public string Name { get; set; } = null!;
 
     [Required]
     [Display(Name = "System Type")]
-    [StringLength(EntityValidationConstants.SolarAsset.TypeMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.TypeMaxLength)]
     public string Type { get; set; } = null!;
 
     [Required]
     public string OwnerId { get; set; } = null!;
 
-    [Range(EntityValidationConstants.SolarAsset.PowerMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.PowerMin, double.MaxValue)]
     public double PowerKw { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.CapacityMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.CapacityMin, double.MaxValue)]
     public double CapacityKw { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EfficiencyMin, EntityValidationConstants.SolarAsset.EfficiencyMax)]
+    [Range(EntityValidationConstants.SolarSystem.EfficiencyMin, EntityValidationConstants.SolarSystem.EfficiencyMax)]
     public double EfficiencyPercent { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.EnergyMin, double.MaxValue)]
     public double EnergyTodayKWh { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.EnergyMin, double.MaxValue)]
     public double EnergyMonthKWh { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.EnergyMin, double.MaxValue)]
     public double EnergyYearKWh { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.EnergyMin, double.MaxValue)]
     public double EnergyTotalKWh { get; set; }
 
     public bool IsOnline { get; set; }
@@ -53,7 +53,7 @@ public class SolarAssetPrototype : BaseDeletableModel<string>
     [DataType(DataType.Date)]
     public DateTime CommissioningDate { get; set; }
 
-    [StringLength(EntityValidationConstants.SolarAsset.InstallerNameMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.InstallerNameMaxLength)]
     public string? InstallerName { get; set; }
 
     [EmailAddress]
@@ -62,17 +62,17 @@ public class SolarAssetPrototype : BaseDeletableModel<string>
     [Phone]
     public string? InstallerPhone { get; set; }
 
-    [StringLength(EntityValidationConstants.SolarAsset.TimeZoneMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.TimeZoneMaxLength)]
     public string? TimeZone { get; set; }
 
-    [StringLength(EntityValidationConstants.SolarAsset.AddressMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.AddressMaxLength)]
     public string? Address { get; set; }
 
     [Url]
-    [StringLength(EntityValidationConstants.SolarAsset.ImageUrlMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.ImageUrlMaxLength)]
     public string? ImageUrl { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.EnergyMin, double.MaxValue)]
     public double DailyEnergyNeedKWh { get; set; }
 
     [Range(0, 100)]

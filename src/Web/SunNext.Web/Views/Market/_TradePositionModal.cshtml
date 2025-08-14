@@ -13,12 +13,12 @@
                 <div class="modal-body">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">Solar Asset</label>
-                            <select name="SolarAssetId" class="form-select" required>
-                                <option disabled selected value="">-- Select Asset --</option>
-                                @foreach (var asset in Model.Assets)
+                            <label class="form-label">Solar System</label>
+                            <select name="SolarSystemId" class="form-select" required>
+                                <option disabled selected value="">-- Select System --</option>
+                                @foreach (var system in Model.Systems)
                                 {
-                                    <option value="@asset.Id">@asset.Name</option>
+                                    <option value="@system.Id">@system.Name</option>
                                 }
                             </select>
                         </div>

@@ -10,14 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using SunNext.Common;
 using SunNext.Services.Data.Prototypes.Market;
-using SunNext.Services.Data.Prototypes.SolarAsset;
+using SunNext.Services.Data.Prototypes.SolarSystem;
 using SunNext.Services.Market;
 using SunNext.Services.Simulation;
-using SunNext.Services.SolarAsset;
+using SunNext.Services.SolarSystem;
 using SunNext.Services.VirtualWallet;
 using SunNext.Web.Controllers;
 using SunNext.Web.ViewModels.Market;
-using SunNext.Web.ViewModels.SolarAssets;
+using SunNext.Web.ViewModels.SolarSystem;
 using SunNext.Web.ViewModels.VirtualWalletView;
 using Xunit;
 
@@ -26,7 +26,7 @@ namespace SunNext.Web.Tests.Controllers
     public class MarketControllerTests
     {
         private readonly Mock<IMarketService> _mockMarketService;
-        private readonly Mock<ISolarAssetService> _mockSolarAssetService;
+        private readonly Mock<ISolarSystemService> _mockSolarSystemService;
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<IVirtualWalletService> _mockWalletService;
         private readonly Mock<ISolarSimulatorService> _mockSimulationService;
@@ -36,7 +36,7 @@ namespace SunNext.Web.Tests.Controllers
         public MarketControllerTests()
         {
             _mockMarketService = new Mock<IMarketService>();
-            _mockSolarAssetService = new Mock<ISolarAssetService>();
+            _mockSolarSystemService = new Mock<ISolarSystemService>();
             _mockMapper = new Mock<IMapper>();
             _mockWalletService = new Mock<IVirtualWalletService>();
             _mockSimulationService = new Mock<ISolarSimulatorService>();
@@ -44,7 +44,7 @@ namespace SunNext.Web.Tests.Controllers
             _controller = new MarketController(
                 _mockMarketService.Object,
                 _mockMapper.Object,
-                _mockSolarAssetService.Object,
+                _mockSolarSystemService.Object,
                 _mockWalletService.Object,
                 _mockSimulationService.Object);
 
@@ -78,7 +78,7 @@ namespace SunNext.Web.Tests.Controllers
                 TradeDate = tradeDate
             };
 
-            _controller.ModelState.AddModelError("AssetId", "Asset is required");
+            _controller.ModelState.AddModelError("SystemId", "System is required");
 
             // Act
             var result = await _controller.AddTradePosition(model);

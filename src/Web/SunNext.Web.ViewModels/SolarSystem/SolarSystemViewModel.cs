@@ -2,11 +2,11 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using SunNext.Data.Common.Models;
 
-namespace SunNext.Web.ViewModels.SolarAssets;
+namespace SunNext.Web.ViewModels.SolarSystem;
 
-public class SolarAssetViewModel : BaseDeletableModel<string>
+public class SolarSystemViewModel : BaseDeletableModel<string>
 {
-    [Display(Name = "Asset Name")]
+    [Display(Name = "System Name")]
     public string Name { get; set; } = null!;
 
     [Display(Name = "System Type")]

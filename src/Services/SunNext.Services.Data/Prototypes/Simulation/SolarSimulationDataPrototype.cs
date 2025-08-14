@@ -17,5 +17,5 @@ public class SolarSimulationDataPrototype : BaseDeletableModel<string>
 
     public double PowerOutput { get; set; } // kW
 
-    public string SolarAssetId { get; set; }
+    public string SolarSystemId { get; set; }
 }

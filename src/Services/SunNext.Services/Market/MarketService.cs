@@ -42,9 +42,9 @@ public class MarketService : IMarketService
     public async Task GenerateAndSaveDailyTradesAsync(DateTime date, string userId)
     {
         var marketPrices = await GetPricesByDateWithFallbackAsync(date);
-        var energyByAsset = await _solarSimulatorService.GetTotalEnergyGeneratedPerAssetAsync(date);
+        var energyBySystem = await _solarSimulatorService.GetTotalEnergyGeneratedPerSystemAsync(date);
 
-        foreach (var (assetId, totalEnergy) in energyByAsset)
+        foreach (var (systemId, totalEnergy) in energyBySystem)
         {
             var remainingEnergy = totalEnergy;
 
@@ -66,7 +66,7 @@ public class MarketService : IMarketService
                     Id = Guid.NewGuid().ToString(),
                     TradeDate = DateOnly.FromDateTime(price.Date),
                     Hour = price.Hour,
-                    SolarAssetId = assetId,
+                    SolarSystemId = systemId,
                     AmountMWh = (decimal)amountToSell,
                     PricePerMWh = price.PricePerMWh,
                     UserId = userId
@@ -97,7 +97,7 @@ public class MarketService : IMarketService
             {
                 Id = Guid.NewGuid().ToString(),
                 UserId = userId,
-                SolarAssetId = dto.SolarAssetId,
+                SolarSystemId = dto.SolarSystemId,
                 TradeDate = DateOnly.FromDateTime(dto.TradeDate),
                 Hour = hour,
                 AmountMWh = 1, // Simulated fixed value or real input

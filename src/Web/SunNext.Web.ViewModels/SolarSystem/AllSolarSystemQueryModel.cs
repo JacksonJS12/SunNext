@@ -5,18 +5,18 @@ using SunNext.Common.Enums;
 using SunNext.Data.Common.Models;
 using static SunNext.Common.GlobalConstants;
 
-namespace SunNext.Web.ViewModels.SolarAssets
+namespace SunNext.Web.ViewModels.SolarSystem
 {
-    public class AllSolarAssetsQueryModel : BaseDeletableModel<string>
+    public class AllSolarSystemQueryModel : BaseDeletableModel<string>
     {
-        public AllSolarAssetsQueryModel()
+        public AllSolarSystemQueryModel()
         {
-            SolarAssets = new HashSet<SolarAssetListItemViewModel>();
+            SolarSystems = new HashSet<SolarSystemListItemViewModel>();
             CurrentPage = DefaultPage;
-            SolarAssetsPerPage = EntitiesPerPage;
+            SolarSystemsPerPage = EntitiesPerPage;
         }
 
-        [Display(Name = "Asset Type")]
+        [Display(Name = "System Type")]
         public string Type { get; set; } = null!;
 
         [Display(Name = "Search by Name or Location")]
@@ -31,17 +31,17 @@ namespace SunNext.Web.ViewModels.SolarAssets
         public DateTime? InstallationDateTo { get; set; }
 
         [Display(Name = "Sort By")]
-        public SolarAssetSorting SolarAssetSorting { get; set; }
+        public SolarSystemSorting SolarSystemSorting { get; set; }
 
         [Display(Name = "Items Per Page")]
         [Range(1, 100)]
-        public int SolarAssetsPerPage { get; set; }
+        public int SolarSystemsPerPage { get; set; }
 
         [Range(1, int.MaxValue)]
         public int CurrentPage { get; set; }
 
-        public int TotalSolarAssets { get; set; }
+        public int TotalSolarSystems { get; set; }
 
-        public IEnumerable<SolarAssetListItemViewModel> SolarAssets { get; set; }
+        public IEnumerable<SolarSystemListItemViewModel> SolarSystems { get; set; }
     }
 }

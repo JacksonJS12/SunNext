@@ -4,23 +4,23 @@ using System.ComponentModel.DataAnnotations;
 using SunNext.Common.Enums;
 using static SunNext.Common.GlobalConstants;
 
-namespace SunNext.Services.Data.Prototypes.SolarAsset
+namespace SunNext.Services.Data.Prototypes.SolarSystem
 {
-    public class AllSolarAssetsQueryPrototype
+    public class AllSolarSystemsQueryPrototype
     {
-        public AllSolarAssetsQueryPrototype()
+        public AllSolarSystemsQueryPrototype()
         {
-            SolarAssets = new HashSet<SolarAssetListItemPrototype>();
-            SolarAssetTypes = new HashSet<string>();
+            SolarSystems = new HashSet<SolarSystemListItemPrototype>();
+            SolarSystemTypes = new HashSet<string>();
             CurrentPage = DefaultPage;
-            SolarAssetsPerPage = EntitiesPerPage;
+            SolarSystemsPerPage = EntitiesPerPage;
         }
 
         [Display(Name = "Search by Name or Location")]
         public string? SearchString { get; set; }
 
-        [Display(Name = "Solar Asset Type")]
-        public string? SolarAssetType { get; set; }
+        [Display(Name = "Solar System Type")]
+        public string? SolarSystemType { get; set; }
 
         [Display(Name = "Installation Date From")]
         [DataType(DataType.Date)]
@@ -31,19 +31,19 @@ namespace SunNext.Services.Data.Prototypes.SolarAsset
         public DateTime? InstallationDateTo { get; set; }
 
         [Display(Name = "Sort By")]
-        public SolarAssetSorting SolarAssetSorting { get; set; }
+        public SolarSystemSorting SolarSystemSorting { get; set; }
 
         [Display(Name = "Items Per Page")]
         [Range(1, 100)]
-        public int SolarAssetsPerPage { get; set; }
+        public int SolarSystemsPerPage { get; set; }
 
         [Range(1, int.MaxValue)]
         public int CurrentPage { get; set; }
 
-        public int TotalSolarAssets { get; set; }
+        public int TotalSolarSystems { get; set; }
 
-        public IEnumerable<SolarAssetListItemPrototype> SolarAssets { get; set; }
+        public IEnumerable<SolarSystemListItemPrototype> SolarSystems { get; set; }
 
-        public IEnumerable<string> SolarAssetTypes { get; set; }
+        public IEnumerable<string> SolarSystemTypes { get; set; }
     }
 }

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SunNext.Common.Enums;
 
-public enum SolarAssetSorting
+public enum SolarSystemSorting
 {
     [Display(Name = "Newest First")]
     Newest = 0,

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SunNext.Common;
-using SunNext.Web.ViewModels.SolarAssets;
+using SunNext.Web.ViewModels.SolarSystem;
 
 namespace SunNext.Web.ViewModels.Market;
 public class TradePositionInputModel
 {
     [Required]
-    [Display(Name = "Solar Asset")]
-    public string SolarAssetId { get; set; } = null!;
+    [Display(Name = "Solar System")]
+    public string SolarSystemId { get; set; } = null!;
 
 
     [Required]
@@ -32,6 +32,6 @@ public class TradePositionInputModel
 
     [MaxLength(EntityValidationConstants.MarketTrade.StrategyTagMaxLength)]
     public string? StrategyTag { get; set; }
-    public List<SimpleAssetViewModel> Assets { get; set; } = new();
+    public List<SolarSystemViewModel> Systems { get; set; } = new();
 
 }

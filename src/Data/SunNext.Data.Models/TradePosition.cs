@@ -17,9 +17,9 @@ public class TradePosition : BaseDeletableModel<string>
     }
 
     [Required]
-    public string SolarAssetId { get; set; } = null!;
+    public string SolarSystemId { get; set; } = null!;
 
-    public SolarAsset SolarAsset { get; set; } = null!;
+    public SolarSystem SolarSystem { get; set; } = null!;
 
     [Required]
     public DateOnly TradeDate { get; set; }

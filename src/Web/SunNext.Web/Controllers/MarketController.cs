@@ -7,13 +7,14 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SunNext.Common;
 using SunNext.Services.Data.Prototypes.Market;
-using SunNext.Services.Data.Prototypes.SolarAsset;
+using SunNext.Services.Data.Prototypes.SolarSystem;
+using SunNext.Services.Data.Prototypes.SolarSystem;
 using SunNext.Web.ViewModels.Market;
 using SunNext.Services.Market;
 using SunNext.Services.Simulation;
-using SunNext.Services.SolarAsset;
+using SunNext.Services.SolarSystem;
 using SunNext.Services.VirtualWallet;
-using SunNext.Web.ViewModels.SolarAssets;
+using SunNext.Web.ViewModels.SolarSystem;
 using SunNext.Web.ViewModels.VirtualWalletView;
 using static SunNext.Common.GlobalConstants;
 
@@ -22,7 +23,7 @@ namespace SunNext.Web.Controllers;
 public class MarketController : BaseController
 {
     private readonly IMarketService _marketService;
-    private readonly ISolarAssetService _solarAssetService;
+    private readonly ISolarSystemService _solarSystemService;
     private readonly IMapper _mapper;
     private readonly IVirtualWalletService _walletService;
     private readonly ISolarSimulatorService _simulationDataService;
@@ -30,13 +31,13 @@ public class MarketController : BaseController
     public MarketController(
         IMarketService marketService,
         IMapper mapper,
-        ISolarAssetService solarAssetService,
+        ISolarSystemService solarSystemService,
         IVirtualWalletService walletService,
         ISolarSimulatorService simulationDataService)
     {
         this._marketService = marketService;
         this._mapper = mapper;
-        this._solarAssetService = solarAssetService;
+        this._solarSystemService = solarSystemService;
         this._walletService = walletService;
         this._simulationDataService = simulationDataService;
     }
@@ -132,18 +133,18 @@ public class MarketController : BaseController
     {
         var userId = GetUserId(); 
 
-        var queryModel = new AllSolarAssetsQueryPrototype
+        var queryModel = new AllSolarSystemsQueryPrototype
         {
             CurrentPage = 1,
-            SolarAssetsPerPage = 1000,
+            SolarSystemsPerPage = 1000,
             SearchString = null,
-            SolarAssetType = null,
+            SolarSystemType = null,
         };
 
-        var result = await _solarAssetService.AllAsync(queryModel, userId);
+        var result = await _solarSystemService.AllAsync(queryModel, userId);
 
-        var assetList = result.SolarAssets
-            .Select(a => new SimpleAssetViewModel
+        var systemList = result.SolarSystems
+            .Select(a => new SolarSystemViewModel
             {
                 Id = a.Id,
                 Name = a.Name
@@ -153,7 +154,7 @@ public class MarketController : BaseController
         return new TradePositionInputModel
         {
             TradeDate = date,
-            Assets = assetList
+            Systems = systemList
         };
     }
     public IActionResult Index()

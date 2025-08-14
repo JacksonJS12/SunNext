@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata;
 using SunNext.Common;
 using SunNext.Services.Market;
-using SunNext.Services.SolarAsset;
+using SunNext.Services.SolarSystem;
 using SunNext.Services.User;
 using SunNext.Web.ViewModels.User;
 
@@ -13,14 +13,14 @@ namespace SunNext.Web.Controllers;
 
 public class UserController : BaseController
 {
-    private readonly ISolarAssetService _solarAssetService;
+    private readonly ISolarSystemService _solarSystemService;
     private readonly IMarketService _marketService;
     private readonly IUserService _userService;
     
 
-    public UserController( ISolarAssetService _solarAssetService, IMarketService _marketService, IUserService _userService )
+    public UserController( ISolarSystemService solarSystemService, IMarketService _marketService, IUserService _userService )
     {
-        this._solarAssetService = _solarAssetService;
+        this._solarSystemService = solarSystemService;
         this._marketService = _marketService;
         this._userService = _userService;
     }
@@ -35,7 +35,7 @@ public class UserController : BaseController
         var model = new AdminDashboardViewModel
         {
             TotalUsers = await this._userService.CountAsync(),
-            TotalAssets = await this._solarAssetService.CountAsync(),
+            TotalSystems = await this._solarSystemService.CountAsync(),
             TradeRecords = await this._marketService.CountAsync(),
         };
 

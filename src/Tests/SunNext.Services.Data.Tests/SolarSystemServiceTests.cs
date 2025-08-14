@@ -8,43 +8,43 @@ using Moq;
 using SunNext.Common.Enums;
 using SunNext.Data.Common.Repositories;
 using SunNext.Services.Data;
-using SunNext.Services.Data.Prototypes.SolarAsset;
-using SunNext.Services.SolarAsset;
+using SunNext.Services.Data.Prototypes.SolarSystem;
+using SunNext.Services.SolarSystem;
 using Xunit;
 
 namespace SunNext.Services.Data.Tests
 {
-    public class SolarAssetServiceTests
+    public class SolarSystemServiceTests
     {
-        private readonly Mock<IDeletableEntityRepository<SunNext.Data.Models.SolarAsset>> _mockRepository;
+        private readonly Mock<IDeletableEntityRepository<SunNext.Data.Models.SolarSystem>> _mockRepository;
         private readonly Mock<IMapper> _mockMapper;
-        private readonly SolarAssetService _service;
+        private readonly SolarSystemService _service;
 
-        public SolarAssetServiceTests()
+        public SolarSystemServiceTests()
         {
-            _mockRepository = new Mock<IDeletableEntityRepository<SunNext.Data.Models.SolarAsset>>();
+            _mockRepository = new Mock<IDeletableEntityRepository<SunNext.Data.Models.SolarSystem>>();
             _mockMapper = new Mock<IMapper>();
-            _service = new SolarAssetService(_mockRepository.Object, _mockMapper.Object);
+            _service = new SolarSystemService(_mockRepository.Object, _mockMapper.Object);
         }
 
-        public class AllSolarAssetsQueryPrototype
+        public class AllSolarSystemsQueryPrototype
         {
             public string SearchString { get; set; }
-            public string SolarAssetType { get; set; }
+            public string SolarSystemType { get; set; }
             public DateTime? InstallationDateFrom { get; set; }
             public DateTime? InstallationDateTo { get; set; }
-            public SolarAssetSorting SolarAssetSorting { get; set; }
+            public SolarSystemSorting SolarSystemSorting { get; set; }
             public int CurrentPage { get; set; } = 1;
-            public int SolarAssetsPerPage { get; set; } = 10;
+            public int SolarSystemsPerPage { get; set; } = 10;
         }
 
-        public class AllSolarAssetsFilteredAndPagedPrototype
+        public class AllSolarSystemsFilteredAndPagedPrototype
         {
-            public IEnumerable<SolarAssetListItemPrototype> SolarAssets { get; set; }
-            public int TotalSolarAssetsCount { get; set; }
+            public IEnumerable<SolarSystemListItemPrototype> SolarSystems { get; set; }
+            public int TotalSolarSystemsCount { get; set; }
         }
 
-        public class SolarAssetListItemPrototype
+        public class SolarSystemListItemPrototype
         {
             public string Id { get; set; }
             public string Name { get; set; }
@@ -52,7 +52,7 @@ namespace SunNext.Services.Data.Tests
             public decimal PowerKw { get; set; }
         }
 
-        public class SolarAssetPrototype
+        public class SolarSystemPrototype
         {
             public string Id { get; set; }
             public string Name { get; set; }

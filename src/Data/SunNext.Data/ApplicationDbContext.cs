@@ -23,7 +23,7 @@
         }
 
         public DbSet<BlogPost> BlogPosts { get; set; }
-        public DbSet<SolarAsset> SolarAssets { get; set; }
+        public DbSet<SolarSystem> SolarSystems { get; set; }
         public DbSet<SolarSimulationData> SolarSimulationData { get; set; }
         public DbSet<MarketTrade> MarketTrades { get; set; }
         public DbSet<TradePosition> TradePositions { get; set; }

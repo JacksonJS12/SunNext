@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SunNext.Services.Market;
-using SunNext.Services.SolarAsset;
+using SunNext.Services.SolarSystem;
 using SunNext.Services.User;
 using SunNext.Web.Controllers;
 using SunNext.Web.ViewModels.User;
@@ -12,19 +12,19 @@ namespace SunNext.Web.Tests.Controllers
 {
     public class UserControllerTests
     {
-        private readonly Mock<ISolarAssetService> _mockSolarAssetService;
+        private readonly Mock<ISolarSystemService> _mockSolarSystemService;
         private readonly Mock<IMarketService> _mockMarketService;
         private readonly Mock<IUserService> _mockUserService;
         private readonly UserController _controller;
 
         public UserControllerTests()
         {
-            _mockSolarAssetService = new Mock<ISolarAssetService>();
+            _mockSolarSystemService = new Mock<ISolarSystemService>();
             _mockMarketService = new Mock<IMarketService>();
             _mockUserService = new Mock<IUserService>();
 
             _controller = new UserController(
-                _mockSolarAssetService.Object,
+                _mockSolarSystemService.Object,
                 _mockMarketService.Object,
                 _mockUserService.Object);
         }
@@ -44,13 +44,13 @@ namespace SunNext.Web.Tests.Controllers
         {
             // Arrange
             var totalUsers = 150;
-            var totalAssets = 75;
+            var totalSystem = 75;
             var tradeRecords = 250;
 
             _mockUserService.Setup(s => s.CountAsync())
                 .ReturnsAsync(totalUsers);
-            _mockSolarAssetService.Setup(s => s.CountAsync())
-                .ReturnsAsync(totalAssets);
+            _mockSolarSystemService.Setup(s => s.CountAsync())
+                .ReturnsAsync(totalSystem);
             _mockMarketService.Setup(s => s.CountAsync())
                 .ReturnsAsync(tradeRecords);
 
@@ -63,7 +63,7 @@ namespace SunNext.Web.Tests.Controllers
             
             var model = Assert.IsType<AdminDashboardViewModel>(viewResult.Model);
             Assert.Equal(totalUsers, model.TotalUsers);
-            Assert.Equal(totalAssets, model.TotalAssets);
+            Assert.Equal(totalSystem, model.TotalSystems);
             Assert.Equal(tradeRecords, model.TradeRecords);
         }
 

@@ -3,52 +3,52 @@ using System.ComponentModel.DataAnnotations;
 using SunNext.Common;
 using SunNext.Data.Common.Models;
 
-namespace SunNext.Web.ViewModels.SolarAssets;
+namespace SunNext.Web.ViewModels.SolarSystem;
 
-public class SolarAssetFormModel : BaseDeletableModel<string>
+public class SolarSystemFormModel : BaseDeletableModel<string>
 {
-    public SolarAssetFormModel()
+    public SolarSystemFormModel()
     {
         this.Id = Guid.NewGuid().ToString();
     }
     [Required]
-    [Display(Name = "Asset Name")]
-    [StringLength(EntityValidationConstants.SolarAsset.NameMaxLength)]
+    [Display(Name = "System Name")]
+    [StringLength(EntityValidationConstants.SolarSystem.NameMaxLength)]
     public string Name { get; set; } = null!;
 
     [Required]
     [Display(Name = "System Type")]
-    [StringLength(EntityValidationConstants.SolarAsset.TypeMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.TypeMaxLength)]
     public string Type { get; set; } = null!;
 
     [Required]
     public string OwnerId { get; set; } = null!;
 
-    [Range(EntityValidationConstants.SolarAsset.PowerMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.PowerMin, double.MaxValue)]
     [Display(Name = "Power (kW)")]
     public double PowerKw { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.CapacityMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.CapacityMin, double.MaxValue)]
     [Display(Name = "Capacity (kWp)")]
     public double CapacityKw { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EfficiencyMin, EntityValidationConstants.SolarAsset.EfficiencyMax)]
+    [Range(EntityValidationConstants.SolarSystem.EfficiencyMin, EntityValidationConstants.SolarSystem.EfficiencyMax)]
     [Display(Name = "Efficiency (%)")]
     public double EfficiencyPercent { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.EnergyMin, double.MaxValue)]
     [Display(Name = "Today's Energy (kWh)")]
     public double EnergyTodayKWh { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.EnergyMin, double.MaxValue)]
     [Display(Name = "Monthly Energy (kWh)")]
     public double EnergyMonthKWh { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.EnergyMin, double.MaxValue)]
     [Display(Name = "Yearly Energy (kWh)")]
     public double EnergyYearKWh { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.EnergyMin, double.MaxValue)]
     [Display(Name = "Total Energy (kWh)")]
     public double EnergyTotalKWh { get; set; }
 
@@ -59,33 +59,33 @@ public class SolarAssetFormModel : BaseDeletableModel<string>
     public DateTime CommissioningDate { get; set; }
 
     [Display(Name = "Installer Name")]
-    [StringLength(EntityValidationConstants.SolarAsset.InstallerNameMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.InstallerNameMaxLength)]
     public string? InstallerName { get; set; }
 
     [EmailAddress]
     [Display(Name = "Installer Email")]
-    [StringLength(EntityValidationConstants.SolarAsset.InstallerEmailMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.InstallerEmailMaxLength)]
     public string? InstallerEmail { get; set; }
 
     [Phone]
     [Display(Name = "Installer Phone")]
-    [StringLength(EntityValidationConstants.SolarAsset.InstallerPhoneMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.InstallerPhoneMaxLength)]
     public string? InstallerPhone { get; set; }
 
     [Display(Name = "Time Zone")]
-    [StringLength(EntityValidationConstants.SolarAsset.TimeZoneMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.TimeZoneMaxLength)]
     public string? TimeZone { get; set; }
 
     [Display(Name = "Installation Address")]
-    [StringLength(EntityValidationConstants.SolarAsset.AddressMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.AddressMaxLength)]
     public string? Address { get; set; }
 
     [Url]
     [Display(Name = "Image URL")]
-    [StringLength(EntityValidationConstants.SolarAsset.ImageUrlMaxLength)]
+    [StringLength(EntityValidationConstants.SolarSystem.ImageUrlMaxLength)]
     public string? ImageUrl { get; set; }
 
-    [Range(EntityValidationConstants.SolarAsset.EnergyMin, double.MaxValue)]
+    [Range(EntityValidationConstants.SolarSystem.EnergyMin, double.MaxValue)]
     [Display(Name = "Avg. Daily Energy Need (kWh)")]
     public double DailyEnergyNeedKWh { get; set; }
 

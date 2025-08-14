@@ -48,7 +48,7 @@ namespace SunNext.Services.Market.Tests
         }
 
         [Fact]
-        public async Task GenerateAndSaveDailyTradesAsync_ShouldCreateTradesForEachAsset()
+        public async Task GenerateAndSaveDailyTradesAsync_ShouldCreateTradesForEachSystem()
         {
             // Arrange
             var date = DateTime.Today;
@@ -61,10 +61,10 @@ namespace SunNext.Services.Market.Tests
                 new MarketPricePrototype { Hour = 3, PricePerMWh = 160, Date = date }
             };
 
-            var energyByAsset = new Dictionary<string, double>
+            var energyBySystem = new Dictionary<string, double>
             {
-                { "asset1", 100.5 },
-                { "asset2", 50.0 }
+                { "system1", 100.5 },
+                { "system2", 50.0 }
             };
 
             SetupHttpResponse(JsonConvert.SerializeObject(marketPrices.Select(p => new MarketPriceRawPrototype
@@ -74,8 +74,8 @@ namespace SunNext.Services.Market.Tests
                 Date = DateOnly.FromDateTime(p.Date)
             })));
 
-            _mockSolarSimulatorService.Setup(s => s.GetTotalEnergyGeneratedPerAssetAsync(date))
-                .ReturnsAsync(energyByAsset);
+            _mockSolarSimulatorService.Setup(s => s.GetTotalEnergyGeneratedPerSystemAsync(date))
+                .ReturnsAsync(energyBySystem);
 
             _mockRepository.Setup(r => r.AddAsync(It.IsAny<MarketTrade>()))
                 .Returns(Task.CompletedTask);
@@ -87,7 +87,7 @@ namespace SunNext.Services.Market.Tests
             await _service.GenerateAndSaveDailyTradesAsync(date, userId);
 
             // Assert
-            _mockSolarSimulatorService.Verify(s => s.GetTotalEnergyGeneratedPerAssetAsync(date), Times.Once);
+            _mockSolarSimulatorService.Verify(s => s.GetTotalEnergyGeneratedPerSystemAsync(date), Times.Once);
             _mockRepository.Verify(r => r.AddAsync(It.IsAny<MarketTrade>()), Times.AtLeastOnce);
             _mockRepository.Verify(r => r.SaveChangesAsync(), Times.Once);
         }
@@ -101,7 +101,7 @@ namespace SunNext.Services.Market.Tests
                 TradeDate = DateTime.Today,
                 StartHour = 10,
                 EndHour = 12,
-                SolarAssetId = "asset1"
+                SolarSystemId = "system1"
             };
             var userId = "test-user-id";
 
@@ -142,7 +142,7 @@ namespace SunNext.Services.Market.Tests
                 TradeDate = DateTime.Today,
                 StartHour = 10,
                 EndHour = 12,
-                SolarAssetId = "asset1"
+                SolarSystemId = "system1"
             };
             var userId = "test-user-id";
 
@@ -238,6 +238,6 @@ namespace SunNext.Services.Market.Tests
         public DateTime TradeDate { get; set; }
         public int StartHour { get; set; }
         public int EndHour { get; set; }
-        public string SolarAssetId { get; set; }
+        public string SolarSystemId { get; set; }
     }
 }

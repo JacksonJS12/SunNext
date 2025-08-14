@@ -8,7 +8,7 @@ namespace SunNext.Services.Simulation;
 
 public interface ISolarSimulatorService
 {
-    Task GenerateForAllAssetsAsync(DateTime? date);
-    Task<Dictionary<string, double>> GetTotalEnergyGeneratedPerAssetAsync(DateTime date);
+    Task GenerateForAllSystemsAsync(DateTime? date);
+    Task<Dictionary<string, double>> GetTotalEnergyGeneratedPerSystemAsync(DateTime date);
     Task<double> GetTotalEnergyGeneratedByUserAsync(string userId, DateTime date);
 }

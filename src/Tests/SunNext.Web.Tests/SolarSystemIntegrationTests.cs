@@ -6,22 +6,22 @@ using Xunit;
 
 namespace SunNext.Web.Tests.Integration
 {
-    public class SolarAssetIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+    public class SolarSystemIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
     {
         private readonly WebApplicationFactory<Program> _factory;
         private readonly HttpClient _client;
 
-        public SolarAssetIntegrationTests(WebApplicationFactory<Program> factory)
+        public SolarSystemIntegrationTests(WebApplicationFactory<Program> factory)
         {
             _factory = factory;
             _client = _factory.CreateClient();
         }
 
         [Fact]
-        public async Task Get_SolarAssetAll_ReturnsSuccessAndCorrectContentType()
+        public async Task Get_SolarSystemAll_ReturnsSuccessAndCorrectContentType()
         {
             // Act
-            var response = await _client.GetAsync("/SolarAsset/All");
+            var response = await _client.GetAsync("/SolarSystem/All");
 
             // Assert
             response.EnsureSuccessStatusCode();
